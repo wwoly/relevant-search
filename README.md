@@ -1,2 +1,2 @@
-# relevant-search
-Master's thesis about search relevancy in e-commerce
+# Increasing e-commerce conversion rate with relevant search results
+My Master's thesis repository written in LaTeX.
