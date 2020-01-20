@@ -1,0 +1,47 @@
+
+%
+% Appendices are optional. 
+% This part is semi-ugly at the moment. Please give feedback if can
+% improve it.
+
+
+\appendix
+\pagestyle{headings}
+
+
+
+%
+% a) Not-so-handy way, but at least it works
+% 
+\def\appA{APPENDIX A. Something extra} % Define the name and numbering manually
+\chapter*{\appA}                       % Create chapter heading
+\markboth{\appA}{\appA}                % Set page header
+\addcontentsline{toc}{chapter}{\appA}  % Include this in TOC
+% Note that \label does not work with unnumbered chapter
+
+Appendices are purely optional.  All appendices must be referred to in
+the body text
+
+\def\appB{APPENDIX B. Something completely different} % Define another new command
+\chapter*{\appB}                       % As above, but use \appB instead of \appA
+\label{app:B}
+\markboth{\appB}{\appB}                     
+\addcontentsline{toc}{chapter}{\appB}  
+
+
+You can append to your thesis, for example, lengthy mathematical
+derivations, an important algorithm in a programming language, input
+and output listings, an extract of a standard relating to your thesis,
+a user manual, empirical knowledge produced while preparing the
+thesis, the results of a survey, lists, pictures, drawings, maps,
+complex charts (conceptual schema, circuit diagrams, structure charts)
+and so on.
+
+
+%
+% b) The other option is to use numbered chapter and our baseline
+% template report.cls numbers them as A, B... The heading and TOC do
+% not include prefix 'Appendix' although the page header does.
+%\chapter{name of the appendix}
+%\label{app:A}                          % For cross-references
+
