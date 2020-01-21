@@ -96,7 +96,7 @@ autocite=inline
 
 \noindent\Huge{\textsf{\textbf{\textcolor{tunipurple}{\@title}}}}
 \end{flushright}
-\vspace{12.7cm} % adjust to 12.7 this if thesis title needs two lines
+\vspace{12.7cm} % adjust to 13.7 this if thesis title needs only one line
 
 % Last some additional info to the bottom-right corner
 \begin{flushright}  
@@ -111,7 +111,8 @@ autocite=inline
 \pagenumbering{gobble}
 
 % Abstract is defined in different file.
-\input{template/abstract.tex}
+\input{text/abstract.tex}
+\clearpage
 
 % Add the table of contents
 
@@ -120,7 +121,7 @@ autocite=inline
 \tableofcontents                      % Create TOC
 \clearpage
 
-\renewcommand{\chaptername}{} % This disables the prefix 'Chapter' or
+% \renewcommand{\chaptername}{} % This disables the prefix 'Chapter' or
                               % 'Luku' in page headers (in 'twoside'
                               % mode)
 

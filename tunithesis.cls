@@ -87,8 +87,8 @@
 \setlength\footskip{30pt}   % space above the footnote
 \newlength\chapterspace
 \setlength\chapterspace{0.0cm}
-\newcommand\chapterheadbefore{0pt}
-\newcommand\chapterheadafter{12pt}
+\newcommand\chapterheadbefore{12pt}
+\newcommand\chapterheadafter{6pt}
 \newcommand\chapfigname{\thechapter}
 
 
@@ -108,12 +108,11 @@
 % http://tex.loria.fr/ctan-doc/macros/latex/base/classes.pdf
 %
 \renewcommand\chapter{
-  % Start chapter from new page. 'Openright' can be used together with 'twoside' mode
-  \if@openright
-  \cleardoublepage
-  \else
-  \clearpage
-  \fi 
+  % Start chapter from new page. Use this ONLY when writing
+  % Just here for some separation between content.
+%   \clearpage
+  
+  
   \thispagestyle{plain} %
   \global\@topnum\z@    % no floats on top of page
   \@afterindentfalse    % do not indent the next text line
@@ -131,12 +130,10 @@
                   \chaptermark{#1}%
                   \addtocontents{lof}{\protect\addvspace{10\p@}} %
                   \addtocontents{lot}{\protect\addvspace{10\p@}} %
-                  \if@twocolumn
-                  \@topnewpage[\@makechapterhead{#2}]%
-                  \else
+                  
                   \@makechapterhead{#2}%
                   \@afterheading
-                  \fi
+                  
 }
 \def\@makechapterhead#1{%
   \vspace*{\chapterheadbefore}%
@@ -151,12 +148,8 @@
             \vspace{\chapterheadafter}%    % add vertical space
 }}
 \def\@schapter#1{
-  \if@twocolumn
-  \@topnewpage[\@makeschapterhead{#1}]%
-  \else
   \@makeschapterhead{#1}%
   \@afterheading
-  \fi
 }
 \def\@makeschapterhead#1{%
   \vspace*{-22pt}%
@@ -223,19 +216,11 @@
 % header types
 %
 \renewcommand\tableofcontents{%
-  % TOC in single column even if article otherwise has 'twocolumn' mode
-  \if@twocolumn
-  \@restonecoltrue\onecolumn
-  \else
-  \@restonecolfalse
-  \fi
-
   \chapter*{\contentsname}
   \@mkboth {} {}                            % a) No page headers
   %\@mkboth {\contentsname} {\contentsname} % b) Page headers appear as written    
   
   \@starttoc{toc}                           % Create the actual TOC
-  \if@restonecol\twocolumn\fi
 
 }
 
