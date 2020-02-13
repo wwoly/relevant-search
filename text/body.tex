@@ -1,0 +1,73 @@
+
+%%%%% Abstracts and preface.
+
+% Write the abstract(s) and the preface
+% into a separate file for the sake of clarity.
+% Pass the appropriate file name as the first
+% argument to these commands. Put the \abstract
+% in the primary language first and the
+% \otherabstract in the secondary language second.
+% Those who do not speak Finnish only need the
+% first abstract. The second argument of
+% the \preface command takes the place where
+% the thesis was signed in.
+\abstract{text/abstract.tex}
+\otherabstract{text/tiivistelma.tex}
+\preface{text/preface.tex}{Tampere}
+
+%%%%% Table of contents.
+
+\tableofcontents
+
+%%%%% Lists of figures, tables, listings and terms.
+
+% Print the lists of figures and/or tables.
+% (Un)comment either of these commands as required.
+% Both are optional, but if there are many important
+% figures/tables, listing them may be a good idea.
+
+% \listoffigures
+% \listoftables
+% \lstlistoflistings
+
+% % Print the glossary of terms.
+
+% \glossary
+
+%%%%% MAIN MATTER %%%%%
+
+\mainmatter
+
+% Write each of the chapters of the thesis
+% into a separate file for the sake of clarity.
+% They can be \input as shown below. Give both
+% the chapters and their files as descriptive
+% names as possible.
+\chapter{Introduction}
+\label{ch:introduction}
+\input{text/chapters/introduction.tex}
+
+
+
+%%%%% Bibliography/references.
+
+% Print the bibliography according to the
+% information in ./references.bib and
+% the in-line citations used in the body of
+% the thesis.
+% \emergencystretch=2em
+\printbibliography[heading=bibintoc]
+
+%%%%% Appendices.
+
+% Use only if it clarifies the structure of
+% the document. Remember to introduce each
+% appendix and its content.
+
+% \begin{appendices}
+
+% % \chapter{Esimerkkiliite}
+% \label{ch:appendices}
+% % \input{./tex/liite.tex}
+
+% \end{appendices}
