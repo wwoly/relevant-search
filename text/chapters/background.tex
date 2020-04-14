@@ -1,0 +1,512 @@
+
+%% ==========================================================
+
+The following chapter acts as a detailed introduction of the necessary background from literature.
+First, different measurements that are utilized are introduced, 
+both of which are generally used in e-commerce to measure success.
+In addition to the measurements, the section introduces the testing platform utilized to collect the measurements
+and to analyze the test results.
+
+Second, the chapter introduces a search engine first at a more general level before introducing
+Elasticsearch, the search engine utilized in this thesis, in more detail.
+Lastly, the chapter introduces the ranking algorithms that served as a basis for the ones tested.
+In addition to the ranking functions, the chapter introduces what the relevancy of the search results means
+as the purpose is to try to increase the conversion rate by offering more relevant search results to users.
+
+
+
+%% ==========================================================
+\section{Measurements in e-commerce}
+\label{sec:measurements}
+
+The most popular metric to measure the success of an e-commerce platform 
+is a metric called conversion rate,
+which provides a percentage of conversions compared to the total visitor count.
+Despite measuring the performance of a website accurately, 
+a drawback of conversion rate is that a great deal of data is necessary for it to be an accurate measurement 
+\cite{conversionRateWhat}.
+In addition, the overall conversion rate measures small changes poorly, 
+since it measures the performance of the whole website, so
+additional measurements are necessary to measure more specific changes.
+
+
+For instance, to measure the performance of a specific element on a website, 
+the usage of the conversion rate might be redundant. 
+Moreover, the specific element might not have a noticeable effect on it, 
+thus making the conversion rate inaccurate measurement for that situation.
+For specific situations, there exists a metric called click-through rate (CTR), 
+which can measure the performance a small change efficiently \cite{ctrWhat}.
+
+
+The following sections provide an overview of the different measurements used in e-commerce relevant to this thesis.
+First, Section \ref{ss:conversion} talks about the conversion rate in e-commerce, and second, 
+Section \ref{ss:ctr} describes a metric called click-through rate.
+Lastly, Section \ref{ss:abtest} provides an overview of the test platform that was used
+when collecting the results of the implementations.
+
+
+\subsection{Conversion rate}
+\label{ss:conversion}
+The overall conversion rate measures the proportion of orders to the website visitors \cite{conversionRate}.
+For example, if a total of one hundred customers visit a website and two of them place orders, 
+the conversion rate can be calculated with a formula
+\[conversions\ /\ total\ visitors\ *\ 100\% = conversion\ rate \]
+resulting in a conversion rate of 2\%.
+
+Although the conversion rate is not commonly the most accurate metric to be measured, 
+it generally is the most significant for an e-commerce organization.
+The preceding example was with 100 visitors, which is a far too low number to measure conversion rate accurately \cite{conversionRateWhat}.
+Furthermore, in the example, one more converting customer would increase the conversion rate by 50\%,
+making the measurement highly inaccurate.
+
+
+It is important to note that there are other types of conversion rates in e-commerce \cite{conversionRate}.
+The above conversion rate calculates the overall conversion rate of an e-commerce platform.
+In addition to placing an order, the conversions can be, for instance, form submissions, signing up for a subscription 
+or events that product is added to cart \cite{conversionRateWhat}.
+Depending on the situation, other types of conversion measurements might be necessary 
+to capture effects that might not be shown by the overall conversion rate.
+Furthermore, the same formula applies to the different types of conversion rates.
+
+
+In this thesis, the measured conversion rate was the overall conversion rate of the e-commerce platform and 
+the conversion rate of the proportion of customers who interacted with the search application.
+Furthermore, the conversion rates were used as a metric to measure the performance of the search applications
+compared to the baseline.
+
+
+\subsection{Click-through rate}
+\label{ss:ctr}
+
+Click-through rate (CTR) is a measurement used mostly to measure the performance of a specific element on a website, 
+for example, an advertisement \cite{ctrWhat}. 
+CTR is calculated similarly to the conversion rate,
+by dividing the conversions, which are the clicks on the element,
+by impressions, which means the number of visitors, who have seen the element \cite{ctrWhat}.
+
+
+While CTR measures the clicks on a single element accurately, the usage differs based on the situation.
+Generally, high CTR means that the element is highly relevant. 
+However, for instance, in an advertisement, ambiguous keywords might receive high CTR while not necessarily being relevant.
+\cite{ctrWhat}
+
+As mentioned above, the CTR can measure more specific changes in the element. 
+Therefore, it was utilized to measure the performance of the search result list with different implementations.
+Furthermore, to be more precise, to collect the number of clicks on the search results and the position, which product
+was clicked on.
+Since in each implementation, the product list is different, the CTR was able to capture the 
+difference between implementations well and provide insight to the results.
+
+\subsection{Measurements with production A/B testing}
+\label{ss:abtest}
+
+The measurements were an essential part of determining the performance of the introduced methods.
+Furthermore, the measurements were collected by utilizing the Google Optimize platform to conclude A/B tests
+to calculate the measurements during the tests from the collected data.
+An A/B test is a randomized test where the test platform splits the website, or part of it, into two or more variants, 
+and the platform redirects the traffic for the website into the different variants at random \cite{optimizeAbout}. 
+Therefore, when testing the different implementations, the user interface of the search that the customer sees does not change. 
+Only the search results presented to the customer differ.
+
+
+Google Optimize is a test environment, but in addition to operating the tests, 
+it provides a tool to see a rough estimate of the results of the tests, 
+based on the goals defined for the test, without extensive analysis \cite{optimizeAbout}. 
+The tool can give a quick estimate of the results,
+which is useful in determining if the implementation was performing as expected. 
+Furthermore, the goals of the tests utilized 
+in this thesis are introduced later in Section \ref{sec:methodTests}.
+
+
+In order to reliably infer if the concluded tests have increased the conversion rate, 
+a detailed analysis of the results of the tests was necessary. 
+Therefore, Google Analytics was utilized for this since it 
+provides a detailed report about the test variants based on the metadata collected on the website
+\cite{analyticsAbout}.
+The organization already collects data about the performance of products and product lists, 
+so utilizing the existing platform was a logical choice.
+
+
+Generally, the metadata includes the click data when a customer browses the website, the purchase data, 
+and the data, which products are shown on different pages to different customers.
+The collected metadata can be utilized in both the configuration and the analysis of the tests 
+by setting up custom goals for tests. 
+Therefore, the completion percentage of the custom goal during a test can be analyzed.
+The primary goals for e-commerce, for example, revenue and conversion, 
+can be tracked with the completion of the custom goals.
+\cite{analyticsAbout}
+ 
+
+The above sections introduced the metrics used in this thesis and how the measurements are
+collected.
+Firstly, the conversion rate served as the primary measurement used in this thesis 
+since it is generally the most utilized measurement in e-commerce.
+Secondly, the click-through rate was introduced, which was utilized to measure more
+specific changes.
+In this case, the performance of the search result list.
+Lastly, A/B tests were introduced and how they work and use the measurements to determine
+the best result from the test variants.
+The following sections move on to introduced search engines first on a more general level before
+introducing Elasticsearch, the search engine platform used, in more detail.
+
+
+%% ==========================================================
+\section{Utilization of a search engine}
+
+As a general term, a search engine means an application that performs a query from a user and 
+presents the user with the results for the specified query. 
+Furthermore, the era of modern search engines can be thought to have started when
+\citeauthor{googleInit} \cite{googleInit} created Google,
+now the largest search engine. 
+Furthermore, Google has been a large part of making search engines part of our everyday life.
+To further understand how a search engine is utilized in this thesis, this section
+provides an overview in necessary detail.
+In addition, this thesis uses Elasticsearch as the search engine; it shares a considerable amount
+of similarities to the early search engine of Google introduced by 
+\citeauthor{googleInit} \cite{googleInit}.
+Elasticsearch is introduced in detail in Section \ref{sec:elasticsearch}, but the general
+background of the search engines applies to it.
+
+
+\subsection{Overview}
+
+Generally, search engines must be able to search from extensive datasets efficiently.
+A design goal of \citeauthor{googleInit} \cite{googleInit} in \citeyear{googleInit}
+was to build a large-scale search engine 
+that would be able to index hundreds of gigabytes of data, in addition to
+performing hundreds of millions of queries per day.
+The above numbers have grown exponentially in the last two decades, and a present-day
+search engine might need to perform the same amount of queries every hour.
+
+Searching from persistent storage or disk was not feasible, and a more efficient 
+solution was necessary \cite{googleInit}. 
+Thus, the design goals of \citeauthor{googleInit} \cite{googleInit} included the creation of 
+a distributed indexing system, 
+which they could efficiently store the documents. 
+In addition, the indexing system needed to be able to process hundreds of gigabytes of data efficiently 
+due to the queries from the users came in with a rate of hundreds to thousands in 
+a second \cite{googleInit}. 
+Furthermore, the preceding design goal set by \citeauthor{googleInit} \cite{googleInit}
+over two decades ago,
+describes an outline for many of the modern search engines, 
+including Elasticsearch \cite{relevantSearch}.
+
+A search engine is a complex application to do simple string matching efficiently
+on a large-scale.
+However, to perform in a simple task efficiently, a search engine requires a great deal of 
+engineering work.
+In some cases, a simple spelling mistake can result in an empty set of documents, thus creating 
+frustration towards the search engine.
+\cite{relevantSearch}
+
+To simplify the complex application,
+\citeauthor{ganSuel} \cite{ganSuel} broke down a web search engine 
+to four different steps:
+\begin{enumerate}
+    \item Collecting the data from a source.
+    \item Preprocessing the data to a specified format.
+    \item Indexing the documents and creating an inverted index to the search engine.
+    \item Processing queries and searching from the index.
+\end{enumerate}
+Despite describing a web search engine, the preceding steps can be applied to various 
+search applications. 
+First, during the data collection, the search application in this thesis 
+collects the data from persistent storage, which includes multiple databases and database tables.
+Second, since the data includes numerous unnecessary fields 
+and only a selection of them is necessary, the collected data must be preprocessed.
+Third, the previous step yields a document with a specified schema from the data, 
+that is indexed with Elasticsearch Index APIs.
+Indexing both stores the document and creates an inverted index from the document to the search engine.
+Lastly, the queries are processed and sent to the search engine. 
+Furthermore, the search engine performs a search against the inverted index and yields the results for the query.
+
+
+While the four steps describe a search engine in more detail, 
+\citeauthor{relevantSearch} \cite{relevantSearch} stated that 
+a search engine consists of two major parts, the index time and the search time. 
+Moreover, the first three steps are considered as the index time, which is described in Section \ref{ss:invertedIndex},
+and the fourth step is the search time, described in Section \ref{ss:searchTime}.
+
+\subsection{Creating the inverted index}
+\label{ss:invertedIndex}
+
+The inverted index is a central data structure of a search engine enabling 
+matching query terms to the documents swiftly.
+In worst cases, the fields in documents can contain an extensive amount of text, so 
+finding a match from the documents can be costly.
+The inverted index is created to solve the problem of going through all the documents 
+every time a query must be performed. \cite{relevantSearch}
+
+
+The inverted index consists of two crucial parts a terms dictionary and a postings list \cite{relevantSearch}.
+\citeauthor{relevantSearch} \cite{relevantSearch} introduced the following listings
+describing how the inverted index is created in Elasticsearch.
+The listing \ref{lst:docs} includes the example documents, which are indexed to a search engine.
+\begin{lstlisting}[
+caption={Example text documents with identifiers \cite{relevantSearch}.},
+captionpos=b,
+label={lst:docs},
+frame=single]
+    0. One shoe, two shoe, the red shoe, the blue shoe.
+    1. The blue dress shoe is the best shoe.
+    2. The best dress is the one red dress.
+\end{lstlisting}
+During indexing, a term dictionary (\ref{lst:terms}) is created by collecting all individual
+terms called tokens from the documents. 
+Furthermore, each of the terms has an identifier, which maps the term to the posting list (\ref{lst:postings}).
+\begin{lstlisting}[
+caption={Term dictionary is generated from terms in the documents \cite{relevantSearch}.},
+captionpos=b,
+label={lst:terms},
+frame=single,
+mathescape=true,
+literate={=>}{$\rightarrow$}{1}
+]
+    best  => 0      red   => 5
+    blue  => 1      shoe  => 6
+    dress => 2      the   => 7
+    is    => 3      two   => 8
+    one   => 4
+\end{lstlisting}
+\begin{lstlisting}[
+caption={Postings list is a mapping between the term dictionary and documents
+\cite{relevantSearch}.},
+captionpos=b,
+label={lst:postings},
+frame=single,
+mathescape=true,
+literate={=>}{$\rightarrow$}{1}
+]
+    0 => [1,2]      5 => [0,2]
+    1 => [0,1]      6 => [0,1]
+    2 => [1,2]      7 => [0,1,2]
+    3 => [1,2]      8 => [0]
+    4 => [0,2]
+\end{lstlisting}
+
+In addition, the inverted index in Elasticsearch contains additional metadata necessary during the query evaluation
+\cite{relevantSearch}. 
+\citeauthor{relevantSearch} \cite{relevantSearch} provided a full list of the metadata, and
+the following list introduces a selection of the metadata from the list necessary for this thesis.
+\begin{itemize}
+    \item \emph{Document frequency} is a count of documents that contain the term, thus 
+    establishing a notion of the importance of the term. 
+    Generally, the higher the document frequency indicates that the term provides little value when 
+    determining the relevancy of the document to a query.
+    For instance, the term \enquote{the} has a high document frequency providing little value 
+    for the relevancy calculation.
+    \item \emph{Term frequency} determines how many times the term occurs in a document
+    providing a notion of how well a query matches the document.
+    In a nutshell, document 0 contains the term \enquote{shoe} four times and document 1 two times,
+    making the document 0 twice as important match for the query term.
+    \item \emph{Term positions} provide the position where the term occurs in a document. 
+    It makes finding documents with phrase matching possible.
+    \item \emph{Term offsets} keep track of the start and end character offsets. 
+    For example, Google search provides highlights of the matches in the search result listing,
+    which keeping track of the term offsets enables.
+    The highlights provide feedback to the user on why the result matched the query.
+    \item \emph{Stored fields} contain the necessary fields used during searching. 
+    The fields in the inverted index are scrambled versions of the original document, and all fields 
+    presented back to the user must be separately saved to the stored fields.
+    Therefore, the fields might require a great deal of disk space depending on the size of the fields.
+    \item \emph{Doc values} usually contain auxiliary values relevant to scoring the search results.
+    For instance, the values used in sorting or boosting the results are stored in the doc values.
+\end{itemize}
+
+The above section provided an overview of the inverted index, the primary data structure of the search engine.
+In addition, the data saved to the inverted index was introduced, as it is referenced in later chapters.
+The following section continues to describe what index time means and how the inverted index is 
+created in index time.
+
+\subsection{Index time}
+\label{ss:indexTime}
+
+The index time can be viewed as an extracting, transforming, and loading information (ETL) pipeline \cite{relevantSearch}.
+Furthermore, ETL pipelines are referred to when moving data from storage to another while processing it in between \cite{relevantSearch}.
+In this thesis, the ETL pipeline steps for moving the data from persistent storage to the search engine are shown in Figure \ref{fig:etlPipe}.
+
+The steps of the pipeline are extraction, which collects the product data from the persistent storage.
+After the collection, the data is enriched with the additional data necessary to be searched.
+Furthermore, Figure \ref{fig:etlPipe} shows the description of the product and impressions, which is the number of times the product has been viewed, both utilized in searching. 
+The former, when matching the search query to a product, the latter, by the ranking algorithm in the relevancy calculation.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=1.5]{img/etl-pipeline.eps}
+    \caption{Index time described as an ETL pipeline \cite{relevantSearch}.}
+    \label{fig:etlPipe}
+\end{figure}
+
+The third step is analysis, which in Elasticsearch happens during the indexing.
+Before the metadata described in Section \ref{ss:invertedIndex} is collected from the document, 
+a set of analyzers are utilized to create better terms \cite{elasticIntro}.
+For instance, Figure \ref{fig:etlPipe} shows that all text from the document is lowercased, and 
+the possessive ending from the title of Document 1 is removed \cite{relevantSearch}.
+Elasticsearch does this by default to normalize the search terms to make the documents easier to find \cite{elasticIntro}.
+In an ideal case, after the analysis step, a term with plural should match the term without one, thus, 
+making both documents match a query with the term.
+This thesis utilizes a set of analyzers to generate more generic search terms for specific fields.
+Furthermore, the analyzers used are introduced in Section \ref{ss:textAnalysisTools}.
+
+
+The last step of the ETL pipeline is to index the analyzed documents.
+Furthermore, indexing is the process that saves the data to the inverted index and the storage of the search engine \cite{relevantSearch}.
+Generally, the focus during indexing is on the computation performance and resource management
+since the more the fields from the documents are analyzed, the slower the indexing becomes 
+requiring more storage computation power and storage \cite{relevantSearch}.
+In Elasticsearch, the analysis and the indexing happen automatically when 
+a document or a set of documents is posted to the Index API \cite{elasticIntro}.
+
+Searching from the field becomes available only when the field is indexed.
+Consequently, making the decision between which fields to index, which to store, or which fields both index and store.
+Storing the fields refers to saving original content to the metadata data structure introduced in Section \ref{ss:invertedIndex}.
+\cite{relevantSearch}
+
+
+As mentioned above, the utilization of a search engine can be divided into two parts, index time and search time.
+The above section introduces what index time is and how the inverted index is created.
+Furthermore, the following section continues to introduce what search time is and how 
+the documents are searched from the index.
+
+
+\subsection{Searching from the index}
+\label{ss:searchTime}
+A search engine is not an intelligent machine; instead, it is merely a text-matching tool \cite{relevantSearch}. 
+When a query is submitted to the search engine, it 
+matches the individual terms from the query to the tokens in the inverted index, 
+which consequently map to the documents in the index \cite{relevantSearch}. 
+Inverted index functions like the index from the end of books, 
+where the reader can look for a specific topic and find the relevant page number \cite{relevantSearch}.
+Searching for a specific subject from a book by going through page by page is not efficient.
+Instead, the relevant pages can generally be found from the index much faster.
+Furthermore, the same applies to the search engines;
+the abundance of data generally makes searching the documents one by one unfeasible.
+
+
+After a term matches a document, a content score for the match is calculated based on the metadata values in the index
+\cite{relevantSearch}.
+The content score determines how good of a match the document is to the query.
+In addition to the content score, additional business scores can be calculated for the document to provide 
+additional measurements of relevancy.
+Furthermore, the search engine sorts the resulting list in an order specified in the query, and generally, 
+by default, the score determines the order of the resulting list. 
+Thus, yielding in a list sorted by the relevancy of the search result.
+
+
+While the previous section provided an overview of the basic functionalities of a search engine,
+the following section discusses how Elasticsearch works and how the functionalities are utilized in this thesis.
+First, the section provides an overview of Elasticsearch, before moving on the various text analysis 
+utilized when implementing the new search functionalities to the current search application.
+Lastly, the section describes how the results are searched and scored in Elasticsearch before they 
+are returned to the user.
+
+%% ==========================================================
+\input{text/chapters/elasticsearch}
+
+
+%% ==========================================================
+\section{Ranking the search results}
+\label{sec:ranking}
+
+Ranking algorithms are generally integrated part of a search engine, at least in
+the production scale engines, like Elasticsearch.
+Furthermore, ranking algorithms are also widely researched topic, and this following
+section introduces necessary ones which served as a base for the 
+algorithm created for and utilized in this thesis.
+
+Since the ranking algorithms are extensively studied field, and there are vast amounts of different solutions
+about the ranking of the search results from machine learning methods like learning to rank functions
+\cite{l2rEntitiesWeb, learningRankEC} to how different e-commerce platforms have utilized different ranking
+functions \cite{amazonJoyRanking, predictionRelevanceSearchResults, turningClickPurhases}.
+However, this research mainly focuses on using the built-in methods of Elasticsearch
+when ranking the products by relevancy, rather than using complicated methods, due to the time constraints.
+While the need for more complicated ranking functions might be inevitable in the future,
+it was not necessary for the first iteration of the new search application.
+
+
+The ranking algorithms used in this thesis are mainly based on the methods used by
+\citeauthor{relevantSearch} \cite{relevantSearch} in their book.
+They stated that the base score for a product comes from the content score, as mentioned previously,
+and that additional business scores are added to it \cite{relevantSearch}.
+In contrast, \citeauthor{enhancingSearchBestSelling} \cite{enhancingSearchBestSelling} achieved an 
+increase in revenue when including the number of transactions from the day before in indexing
+as the popularity measure for a product.
+
+Furthermore, utilizing the popularity measure as one of the business scores, 
+when calculating the score for the product in search time,
+is significant and matches the needs of the organization effectively.
+So, in this thesis, the proposed algorithm worked similarly, but instead of using the number of transactions
+as the metric to calculate the relevancy rating of a product, the number of product page visits was used.
+Furthermore, this provided much more data points to be used to calculate the relevancy rating.
+
+This section gave an overview of the ranking algorithms relevant to this thesis. 
+While there are a lot of complicated algorithms that could have been utilized, the choice to
+build an own ranking function with already existing data was sufficient for this scope.
+The following section continues to talk about the relevancy of the search results 
+and how the relevancy can be measured in a way so the results can be compared.
+
+
+%% ==========================================================
+\section{Relevancy of the search results}
+\label{sec:relevancy}
+
+To be able to serve customers relevant search results to the queries, it is necessary first to understand 
+what relevancy is.
+\citeauthor{relevantSearch} \cite{relevantSearch} defined the relevancy of the search results to be:
+\begin{displayquote}
+Relevance is the practice of improving search results for users by satisfying their 
+information needs in the context of a particular user experience, 
+while balancing how ranking impacts our business’s needs.
+\end{displayquote}
+
+
+In addition, \citeauthor{relevantSearch} \cite{relevantSearch} argued that
+relevancy is subjective depending on the person who is using the search engine.
+While two people can use the same search query, they value different things differently \cite{relevantSearch}.
+For instance, two customers, both of whom search with the term ``samsung`` might have different 
+information needs. 
+The first customer is searching for refrigerators, and the second is searching for phones.
+While both are equally relevant to the search term, both cannot be the first search result.
+
+
+The solution which solves the example above is personalized search, but since that is out of the scope
+of this thesis, more general measurements for the relevancy were required.
+\citeauthor{relevantSearch} \cite{relevantSearch} stated in the definition of relevancy that the 
+relevancy also includes balancing the ranking in regards to the needs of the business.
+Therefore, as previously mentioned, the score for the document comes from the content score;
+in this case, the score based solely on the query what is relevant and business scores,
+which again fills the needs of the organization.
+Furthermore, the business score is usually deciding factor which products to show on top 
+of the search results if the query matches both equally.
+
+
+In information retrieval, relevancy is purely based on how well the results match the query 
+\cite{relevantSearch}.
+However, in practice, relevancy is more than satisfying the information needs; 
+it also includes satisfying the needs of the business, which might depend on the context 
+\cite{relevantSearch}.
+For instance, in an e-commerce context, for general search terms, 
+showing the products that are out of stock might not usually be relevant. 
+While a product that is not in stock might meet the requirements of the query well, 
+it does not satisfy the needs of the business, since the product cannot be sold.
+
+
+So, to achieve some general relevancy at first, a ranking algorithm that calculated
+scores for the document based on the popularity rating of the product.
+Furthermore, the popularity rating was calculated based on the number of visits on
+the product page in the previous few days.
+In theory, the product pages that customers visit are relevant to the customers, so in a way,
+using the data based on the behavior of customers should satisfy the needs of the customers.
+In addition to the popularity of the products, additional scores were added, and the scores were normalized,
+but that will be introduced in more detail in Section \ref{ss:methodsRanking}
+
+
+The above section provided an insight into what relevant search results mean.
+Furthermore, defining and implementing a relevant search is a difficult task as
+the relevancy is not objective; instead, it changes depending on the user of the application.
+However, before introducing how this thesis tried to achieve relevancy, the following section 
+describes the state of the current search application.
+Furthermore, understanding the current state of the application is essential, so the 
+changes proposed in the method section make sense.
+

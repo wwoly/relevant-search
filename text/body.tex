@@ -1,73 +1,122 @@
 
-%%%%% Abstracts and preface.
+% Final references
+\addbibresource{text/references.bib} %Imports bibliography file
 
-% Write the abstract(s) and the preface
-% into a separate file for the sake of clarity.
-% Pass the appropriate file name as the first
-% argument to these commands. Put the \abstract
-% in the primary language first and the
-% \otherabstract in the secondary language second.
-% Those who do not speak Finnish only need the
-% first abstract. The second argument of
-% the \preface command takes the place where
-% the thesis was signed in.
-\abstract{text/abstract.tex}
-\otherabstract{text/tiivistelma.tex}
-\preface{text/preface.tex}{Tampere}
-
-%%%%% Table of contents.
-
-\tableofcontents
-
-%%%%% Lists of figures, tables, listings and terms.
-
-% Print the lists of figures and/or tables.
-% (Un)comment either of these commands as required.
-% Both are optional, but if there are many important
-% figures/tables, listing them may be a good idea.
-
-% \listoffigures
-% \listoftables
-% \lstlistoflistings
-
-% % Print the glossary of terms.
-
-% \glossary
-
-%%%%% MAIN MATTER %%%%%
-
-\mainmatter
-
-% Write each of the chapters of the thesis
-% into a separate file for the sake of clarity.
-% They can be \input as shown below. Give both
-% the chapters and their files as descriptive
-% names as possible.
-\chapter{Introduction}
-\label{ch:introduction}
-\input{text/chapters/introduction.tex}
+\hypersetup{pdfstartview=}
+\begin{document}
 
 
+% Special trick so that internal macros (denoted with @ in their name)
+% can be used outside the cls file (e.g. \@author)
+\makeatletter
 
-%%%%% Bibliography/references.
 
-% Print the bibliography according to the
-% information in ./references.bib and
-% the in-line citations used in the body of
-% the thesis.
-% \emergencystretch=2em
-\printbibliography[heading=bibintoc]
+%
+% Create the title page.
+% First the logo. Check its language.
+\thispagestyle{empty}
+\vspace*{-.5cm}\noindent
 
-%%%%% Appendices.
+\begin{figure}
+    \vspace{-1.3cm}
+    \advance\leftskip-.3cm
+    \noindent\includegraphics{doc/tunilogo.png}
+\end{figure}
+ 
+\vspace{2.5cm}
+\begin{flushright}
+\noindent\textsf{\LARGE{\@author}}
 
-% Use only if it clarifies the structure of
-% the document. Remember to introduce each
-% appendix and its content.
+\noindent\vspace{0.5cm}
 
-% \begin{appendices}
+\noindent\Huge{\textsf{\textbf{\textcolor{tunipurple}{\@title}}}}
+\end{flushright}
+\vspace{11.7cm} % adjust to 13.7 this if thesis title needs only one line
 
-% % \chapter{Esimerkkiliite}
-% \label{ch:appendices}
-% % \input{./tex/liite.tex}
+% Last some additional info to the bottom-right corner
+\begin{flushright}  
+    \begin{spacing}{1.0}
+        \textsf{Faculty of Information Technology and Communication Sciences (ITC)\\
+        \@thesistype\\
+        April 2020}
+    \end{spacing}
+\end{flushright}
 
-% \end{appendices}
+% Turn off page numbering for the first pages
+\pagenumbering{gobble}
+
+%% ============================================================
+%% ================= CHAPTER: Abstract ========================
+%% ============================================================
+
+% Some fields in abstract are automated, namely those with \@ (author,
+% title, thesis type).
+
+\chapter*{Abstract}
+
+\begin{spacing}{1.0}
+\noindent \@author: \@title\\
+\@thesistype\\
+Tampere University\\
+Master's Programme in Computer Science\\
+April 2020
+\end{spacing}
+\noindent\rule{12cm}{0.4pt}
+
+\vspace{0.5cm}
+
+
+% Abstract is defined in different file.
+\input{text/abstract.tex}
+
+
+%% ============================================================
+%% ================= CHAPTER: Preface =========================
+%% ============================================================
+% \chapter*{Preface}
+
+% \input{text/preface.tex}
+
+% ~
+
+% \noindent Tampere, 14th April 2020
+
+% ~
+
+% \noindent \@author
+
+% \clearpage
+
+% Add the table of contents
+
+
+\setcounter{tocdepth}{3}              % How many header level are included
+\tableofcontents                      % Create TOC
+\clearpage
+
+% \renewcommand{\cleardoublepage}{}
+% \renewcommand{\clearpage}{}
+
+% The body of the text is defined here.
+\pagenumbering{arabic}
+\setcounter{page}{4} % Start numbering from zero because command
+                     
+                     
+                     
+% Final thesis introduction imported from the final project
+\input{text/chapters/main.tex}
+
+% \input{text/chapters-draft.tex}
+
+
+
+
+%
+% The bibliography, i.e the list of references
+%
+\clearpage
+
+\chapter{References}
+\printbibliography[heading=none]
+
+\end{document}
