@@ -1,6 +1,6 @@
 
 %% ==========================================================
-This chapter introduces the different implementations done to improve the relevancy of the search results,
+This chapter introduces the different implementations done to improve the relevance of the search results,
 in addition to the tests concluded to measure the effect that the implementation had.
 The purpose of the implementations was to provide a general direction for future development 
 while providing some robust data on the performance of the current search application for the organization.
@@ -22,12 +22,12 @@ the manual process of uploading the score boost, before moving on to introduce
 the new ranking function was developed and how the score calculation implemented functioned.
 
 
-Since relevancy is subjective and personalized search was out of scope, as previously mentioned,
-a general solution that tried to capture the general relevancy of the search results.
+Since relevance is subjective and personalized search was out of scope, as previously mentioned,
+a general solution that tried to capture the general relevance of the search results.
 Therefore, the purpose was not to show different search results based on the customer who is interacting
 with the search application or based on the previous products the customer has viewed.
 The solution that was developed by the following parts did not take into account any personalized
-information; instead, it tried to achieve good relevancy by using the popularity data for products.
+information; instead, it tried to achieve good relevance by using the popularity data for products.
 
 
 
@@ -118,7 +118,8 @@ In summary, by using different analyzers during index time and search time allow
 matching with shorter search terms. 
 In addition, the usage of an edge-N-gram analyzer in search time only when the search term exceeded the configured
 threshold allowed the exact matching of the shorter search terms.
-In addition to allowing to try to capture the meaning of the longer ones and match the generated tokens to the inverted index.
+Furthermore, for longer search terms, the analyzer tried to capture the meaning of the terms and 
+match the generated tokens to the inverted index.
 
 
 The previous part introduced how the text analysis tools provided by Elasticsearch 
@@ -136,7 +137,7 @@ introduce how the manual process of updating the score boosts was replaced by an
 As the purpose was not to create separate search strategies based on, for instance, the behavior of a customer, 
 a precalculated boost value as the current solution had was enough.
 Furthermore, the current solution used many parameters when calculating a new boost value for a product, and 
-most of them seemed unnecessary and had little to do with relevancy.
+most of them seemed unnecessary and had little to do with relevance.
 
 So, to answer the question, what customers see relevant, a popularity rating was introduced. 
 Furthermore, the rating just included a normalized value of the number of product page views from the previous few days.
@@ -271,7 +272,7 @@ were analyzed before the results are introduced.
 
 
 %% ==========================================================
-\section{Testing the search relevancy}
+\section{Testing the search relevance}
 \label{sec:methodTests}
 
 The purpose of this section is to introduce the testing methods used and introduce how the test setup worked.

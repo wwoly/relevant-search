@@ -107,7 +107,7 @@ In an ideal case, both precision and recall would be 100\%, but that is nearly i
 
 
 In this thesis, the trade-off between precision and recall appeared in one of the empirical tests 
-chosen to measure the relevancy in the development process.
+chosen to measure the relevance in the development process.
 Furthermore, the website has three distinct product categories that are standard washing machines,
 washing machines with dryers, and dishwashers.
 In Finnish, all terms
@@ -426,7 +426,7 @@ frame=single]
 \end{lstlisting}
 
 
-From a relevancy standpoint, the MUST operator provides more relevant results to the query 
+From a relevance standpoint, the MUST operator provides more relevant results to the query 
 yielding in documents that match all parts of the query \cite{relevantSearch}.
 However, the operator also would not return any results if a document does not contain all terms present in the query \cite{relevantSearch}.
 Since, showing search pages with zero results to customers in an e-commerce application should be avoided \cite{zeroResults},
@@ -470,14 +470,14 @@ terms and enables the search with incomplete search terms or additionally can he
 the one introduced in Section \ref{ss:extrackingFeatures}.
 
 
-However, the overuse of wildcards can also introduce a relevancy problem, by increasing the recall and decreasing 
+However, the overuse of wildcards can also introduce a relevance problem, by increasing the recall and decreasing 
 the precision, especially when wildcards are added to both ends of a shorter search term. 
 The current solution used added a wildcard to the start and end of each term, which turned out to be necessary
 due to the current limitations of the content like the example in Section \ref{ss:extrackingFeatures}.
 So, to solve the problem of providing low precision, an implementation that boosts exact matches 
 by adding a score to the matches that exactly matches the query.
 Furthermore, resulting in ranking the more relevant content closer to the top, thus, increasing
-the relevancy of the top search results.
+the relevance of the top search results.
 
 
 In addition to the wildcard search, another functionality, which enabled the searching with incomplete terms, 
@@ -625,7 +625,7 @@ that the other fields are multiplied with and included in the content score calc
 \citeauthor{relevantSearch} \cite{relevantSearch} discovered that using only the \emph{best\ fields} can
 lead to excluding some fields, especially when using boosts for individual fields.
 So, to include all the fields in the content score, the \emph{tie\_breaker} variable was introduced to the query, 
-which provided better relevancy for the search results during the development phase.
+which provided better relevance for the search results during the development phase.
 
 
 

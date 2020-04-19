@@ -10,7 +10,7 @@ and to analyze the test results.
 Second, the chapter introduces a search engine first at a more general level before introducing
 Elasticsearch, the search engine utilized in this thesis, in more detail.
 Lastly, the chapter introduces the ranking algorithms that served as a basis for the ones tested.
-In addition to the ranking functions, the chapter introduces what the relevancy of the search results means
+In addition to the ranking functions, the chapter introduces what the relevance of the search results means
 as the purpose is to try to increase the conversion rate by offering more relevant search results to users.
 
 
@@ -292,9 +292,9 @@ the following list introduces a selection of the metadata from the list necessar
     \item \emph{Document frequency} is a count of documents that contain the term, thus 
     establishing a notion of the importance of the term. 
     Generally, the higher the document frequency indicates that the term provides little value when 
-    determining the relevancy of the document to a query.
+    determining the relevance of the document to a query.
     For instance, the term \enquote{the} has a high document frequency providing little value 
-    for the relevancy calculation.
+    for the relevance calculation.
     \item \emph{Term frequency} determines how many times the term occurs in a document
     providing a notion of how well a query matches the document.
     In a nutshell, document 0 contains the term \enquote{shoe} four times and document 1 two times,
@@ -328,7 +328,7 @@ In this thesis, the ETL pipeline steps for moving the data from persistent stora
 The steps of the pipeline are extraction, which collects the product data from the persistent storage.
 After the collection, the data is enriched with the additional data necessary to be searched.
 Furthermore, Figure \ref{fig:etlPipe} shows the description of the product and impressions, which is the number of times the product has been viewed, both utilized in searching. 
-The former, when matching the search query to a product, the latter, by the ranking algorithm in the relevancy calculation.
+The former, when matching the search query to a product, the latter, by the ranking algorithm in the relevance calculation.
 
 
 \begin{figure}
@@ -388,10 +388,10 @@ After a term matches a document, a content score for the match is calculated bas
 \cite{relevantSearch}.
 The content score determines how good of a match the document is to the query.
 In addition to the content score, additional business scores can be calculated for the document to provide 
-additional measurements of relevancy.
+additional measurements of relevance.
 Furthermore, the search engine sorts the resulting list in an order specified in the query, and generally, 
 by default, the score determines the order of the resulting list. 
-Thus, yielding in a list sorted by the relevancy of the search result.
+Thus, yielding in a list sorted by the relevance of the search result.
 
 
 While the previous section provided an overview of the basic functionalities of a search engine,
@@ -420,7 +420,7 @@ about the ranking of the search results from machine learning methods like learn
 \cite{l2rEntitiesWeb, learningRankEC} to how different e-commerce platforms have utilized different ranking
 functions \cite{amazonJoyRanking, predictionRelevanceSearchResults, turningClickPurhases}.
 However, this research mainly focuses on using the built-in methods of Elasticsearch
-when ranking the products by relevancy, rather than using complicated methods, due to the time constraints.
+when ranking the products by relevance, rather than using complicated methods, due to the time constraints.
 While the need for more complicated ranking functions might be inevitable in the future,
 it was not necessary for the first iteration of the new search application.
 
@@ -437,32 +437,32 @@ Furthermore, utilizing the popularity measure as one of the business scores,
 when calculating the score for the product in search time,
 is significant and matches the needs of the organization effectively.
 So, in this thesis, the proposed algorithm worked similarly, but instead of using the number of transactions
-as the metric to calculate the relevancy rating of a product, the number of product page visits was used.
-Furthermore, this provided much more data points to be used to calculate the relevancy rating.
+as the metric to calculate the relevance rating of a product, the number of product page visits was used.
+Furthermore, this provided much more data points to be used to calculate the relevance rating.
 
 This section gave an overview of the ranking algorithms relevant to this thesis. 
 While there are a lot of complicated algorithms that could have been utilized, the choice to
 build an own ranking function with already existing data was sufficient for this scope.
-The following section continues to talk about the relevancy of the search results 
-and how the relevancy can be measured in a way so the results can be compared.
+The following section continues to talk about the relevance of the search results 
+and how the relevance can be measured in a way so the results can be compared.
 
 
 %% ==========================================================
-\section{Relevancy of the search results}
-\label{sec:relevancy}
+\section{Relevance of the search results}
+\label{sec:relevance}
 
 To be able to serve customers relevant search results to the queries, it is necessary first to understand 
-what relevancy is.
-\citeauthor{relevantSearch} \cite{relevantSearch} defined the relevancy of the search results to be:
+what relevance is.
+\citeauthor{relevantSearch} \cite{relevantSearch} defined the relevance of the search results to be:
 \begin{displayquote}
-Relevance is the practice of improving search results for users by satisfying their 
+``Relevance is the practice of improving search results for users by satisfying their 
 information needs in the context of a particular user experience, 
-while balancing how ranking impacts our business’s needs.
+while balancing how ranking impacts our business’s needs.``
 \end{displayquote}
 
 
 In addition, \citeauthor{relevantSearch} \cite{relevantSearch} argued that
-relevancy is subjective depending on the person who is using the search engine.
+relevance is subjective depending on the person who is using the search engine.
 While two people can use the same search query, they value different things differently \cite{relevantSearch}.
 For instance, two customers, both of whom search with the term ``samsung`` might have different 
 information needs. 
@@ -471,9 +471,9 @@ While both are equally relevant to the search term, both cannot be the first sea
 
 
 The solution which solves the example above is personalized search, but since that is out of the scope
-of this thesis, more general measurements for the relevancy were required.
-\citeauthor{relevantSearch} \cite{relevantSearch} stated in the definition of relevancy that the 
-relevancy also includes balancing the ranking in regards to the needs of the business.
+of this thesis, more general measurements for the relevance were required.
+\citeauthor{relevantSearch} \cite{relevantSearch} stated in the definition of relevance that the 
+relevance also includes balancing the ranking in regards to the needs of the business.
 Therefore, as previously mentioned, the score for the document comes from the content score;
 in this case, the score based solely on the query what is relevant and business scores,
 which again fills the needs of the organization.
@@ -481,9 +481,9 @@ Furthermore, the business score is usually deciding factor which products to sho
 of the search results if the query matches both equally.
 
 
-In information retrieval, relevancy is purely based on how well the results match the query 
+In information retrieval, relevance is purely based on how well the results match the query 
 \cite{relevantSearch}.
-However, in practice, relevancy is more than satisfying the information needs; 
+However, in practice, relevance is more than satisfying the information needs; 
 it also includes satisfying the needs of the business, which might depend on the context 
 \cite{relevantSearch}.
 For instance, in an e-commerce context, for general search terms, 
@@ -492,7 +492,7 @@ While a product that is not in stock might meet the requirements of the query we
 it does not satisfy the needs of the business, since the product cannot be sold.
 
 
-So, to achieve some general relevancy at first, a ranking algorithm that calculated
+So, to achieve some general relevance at first, a ranking algorithm that calculated
 scores for the document based on the popularity rating of the product.
 Furthermore, the popularity rating was calculated based on the number of visits on
 the product page in the previous few days.
@@ -504,8 +504,8 @@ but that will be introduced in more detail in Section \ref{ss:methodsRanking}
 
 The above section provided an insight into what relevant search results mean.
 Furthermore, defining and implementing a relevant search is a difficult task as
-the relevancy is not objective; instead, it changes depending on the user of the application.
-However, before introducing how this thesis tried to achieve relevancy, the following section 
+the relevance is not objective; instead, it changes depending on the user of the application.
+However, before introducing how this thesis tried to achieve relevance, the following section 
 describes the state of the current search application.
 Furthermore, understanding the current state of the application is essential, so the 
 changes proposed in the method section make sense.
