@@ -12,7 +12,6 @@ The history of search engines goes back decades, but the era of modern search en
 when \citeauthor{googleInit} \cite{googleInit} introduced their search engine, Google. 
 In addition, they proposed methods to index a vast number of documents, in their case web pages, 
 and to use a ranking algorithm, PageRank, to rank the documents \cite{googleInit}. 
-The usage of indexing and ranking algorithms has been the foundation for search engines ever since.
 While using ranking algorithms and the ranking search results by relevance was not a new idea, 
 it was revolutionary to utilize the PageRank ranking algorithm in search engines to provide 
 more relevant search results to the queries of the users.
@@ -28,15 +27,16 @@ that can be efficiently utilized in a search engine to provide relevant search r
 
 
 While different relevance methods and the relevance of the search results have been investigated extensively in the past, 
-little research has included the use of the relevance methods in practice in search applications 
-with real-world customers in e-commerce. 
+research has included the use of the relevance methods in practice in search applications 
+with real-world customers in e-commerce to a certain extent. 
 The research has tended to focus on applying the methods in theory to a predetermined dataset to get measurable results
 as opposed to focusing on implementing the methods and measuring the performance in practice. 
 
 
+
 The primary focus of this thesis was to investigate how the relevance of the search results affected 
-the conversion rate of an e-commerce platform by implementing a selection of methods based on the literature. 
-The conversion rate measures what proportion of customers who visited a website bought something, 
+the conversion rate of an e-commerce platform by implementing some methods based on the literature. 
+The conversion rate measures the proportion of customers who visited a website bought something, 
 and it provided a generic measurement of how the implemented methods performed in 
 providing relevant search results to customers.
 However, the relevance of the search result is subjective 
@@ -46,54 +46,54 @@ different for each customer.
 
 The implementation of the methods in this thesis was done to an existing e-commerce platform, 
 which serves tens of thousands of customers daily across the Nordic countries. 
-Furthermore, a set of tests was performed in the platform to a set of customers by offering different search results 
+The tests were performed in the platform to a set of customers by offering different search results 
 and measuring how the implementation affected the conversion rate of the e-commerce platform.
 Furthermore, by making sure the set of customers was large enough and randomized, 
 the relevance of a different implementation could be compared against a baseline.
 
 
-The significance of a search application to the conversion rate of the e-commerce platform is 
+The impact of a search application to the conversion rate of e-commerce platform is 
 approximately 2.5x increase in conversion rate
 when customers interact with the search functionality on the website compared to
 customers who do not interact with the search while visiting the website \cite{powerAnalytics}.
-On the other hand, the increase shows that a link exists between showing the search results 
-shown to customers and the conversion rate of the e-commerce, 
-on the other hand, the increase does not measure the relevance of the search results.
-
-So, depending on the size of the e-commerce organization, the increase in conversion rate can lead to 
-a significant amount of revenue for the organization when customers use their search.
-Furthermore, in this thesis, the goal was to increase the conversion rate of the proportion of customers 
-using the search application while visiting the website. 
-Therefore, how the proportion of customers using the search can be increased was out of the scope of this thesis.
+However, it should be noted that even if a link exists between the search results and the conversion 
+rate of e-commerce, it does not necessarily mean that the results are relevant.
 
 
-The current search application of the e-commerce platform uses Elasticsearch, which was
+The increase in conversion rate when the search is used can lead to 
+a significant amount of revenue for the organization, depending on the size of the e-commerce organization.
+Additionally, the conversion rate of the e-commerce platform would increase if more customers were steered towards
+using the search application.
+However, in this thesis, only the increase of the conversion rate using relevant search results was studied.
+Some closely related research questions such as
+how the proportion of customers using the search can be increased are out of the scope of this thesis.
+
+
+The current search application of the e-commerce platform uses Elasticsearch, which is
 the platform that the methods used in this thesis were implemented on.
-Elasticsearch is a distributed search and analytics engine that provides 
-real-time search and text analysis tools in addition to document storage and indexing capabilities \cite{elasticIntro}. 
-\citeauthor{relevantSearch} \cite{relevantSearch} introduced how to build 
-a production scale search engine with Elasticsearch in their book. 
+Elasticsearch is a large-scale distributed search and analytics engine that provides 
+real-time search and text analysis tools in addition to document storage and indexing capabilities 
+\cite{elasticIntro, relevantSearch}.
 While building a large-scale search engine is out of the scope of this study, 
-a selection of the text analyzing and search result ranking methods \citeauthor{relevantSearch} \cite{relevantSearch} 
-proposed were utilized in this thesis.
+a selection of text analyzing tools and search result ranking methods proposed by 
+\citeauthor{relevantSearch} \cite{relevantSearch} were utilized in this thesis.
 Therefore, understanding how the search engine performs in large scale search applications 
 is crucial before implementing the methods from the literature in practice.
 
 
-The tests for this thesis were done as A/B tests in a production environment to capture the 
+The tests for this thesis were done in a production environment to capture the 
 effects that the different implementations had on the conversion rate and the click-through rate.
 However, tests performed for a few weeks might not have captured the full effect of this thesis 
 since more relevant search results might have a lasting effect on the reputation of the organization, 
-and the increase of a reputation is hard to measure with these kinds of tests. 
+which is hard to measure with these kinds of tests. 
 Generally, the more satisfied customers are with their experience on a website, 
 the more likely they are to return to revisit the website.
 
 
-The results showed that while the click-through rate of the search results was increased, it did not
-show a consistent increase in the conversion rate. 
-Furthermore, indicating that while the relevance of the search results was increased, the conversion
+The results showed that while the click-through rate of the search results was increased, there was no
+consistent increase in the conversion rate, and, while the relevance of the search results was increased, the conversion
 rate was not affected by the change in relevance.
-While the conversion rate was not consistently increased by the different implementations, they
+Although the conversion rate was not consistently increased by the different implementations, they
 proved a need for future development and provided a direction for it.
 
 

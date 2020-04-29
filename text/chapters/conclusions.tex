@@ -1,63 +1,52 @@
 
 
 
-The purpose of this chapter is to summarize the goals of this thesis and identify some problems discovered
-during the tests.
-The chapter summarizes the research goal of this thesis in addition to the additional conclusions drawn
-from the results.
-The conclusions each include the subjects that could be researched further to improve the solution proposed in this thesis
-if some problems were found with the chosen implementation.
-
 
 \section{The effect on conversion rate}
 
 The primary purpose of this thesis was to increase the conversion rate of an existing e-commerce platform by offering
 more relevant search results to users. 
-However, while the concluded tests did not indicate a significant increase in the conversion rate, they still
+However, while the tests did not indicate a significant increase in the conversion rate, they still
 indicated that there might be room to improve the solution, as the conversion rate still was affected by different
 tests.
-While there were a lot of useful tools provided by \citeauthor{relevantSearch} \cite{relevantSearch} in their book, 
-using them, in practice, in a large scale search engine with multiple languages proved to be a difficult task.
+While there were a lot of useful tools provided by \citeauthor{relevantSearch} \cite{relevantSearch}, 
+using them, in practice, in a large-scale search engine with multiple languages proved to be a difficult task.
 
-Furthermore, this thesis still proved that the chosen direction was a success, and the development in the future
+This thesis proved that the chosen direction was a success, and the development in the future
 should focus on the subjects introduced in this thesis.
 When it comes to increasing the conversion rate, much more work needs to be put into investigating 
 how the conversion rate could be increased in the search result list.
-Since customers seemed to find interesting products according to the tests, but still, 
-that did not translate into the conversion rate.
+Since customers seemed to find interesting products, but that did not translate into the conversion rate.
 
 
 \section{Relevance of the search results}
 
-The other main point of this thesis was the relevance of the search results and how it affected the conversion rate 
+The other main research problem of this thesis was the relevance of the search results and how it affected the conversion rate 
 of the e-commerce platform.
-Based on the concluded tests, the conversion rate was not affected significantly by the different implementations.
-However, as previously stated, the customers seemed to find interesting products, at least when measured with the 
+Based on the tests, the conversion rate was not affected significantly by the different implementations.
+However, the customers seemed to find interesting products, when measured with the 
 click-through rate. 
-Based on the concluded tests, there seemed to be little correlation with the relevance of the search results
+Based on the tests, there seemed to be little correlation with the relevance of the search results
 and the conversion rate in the specific e-commerce platform.
 
-While, in literature, the conversion rate was affected by the search results, in reality, the conversion
-rate is affected by many variables besides the search results.
-Therefore, the results could be explained by 
-that the customers may have been searching for information about products and 
-not that interested in buying them.
-On the one hand, the previous example could be explained with the lack of development the search application has seen, 
-which could have affected the behavior of the customers to drive them more towards searching for information.
-On the other hand, the explanation could be 
-that the products offered by the e-commerce platform do not satisfy the needs of the customer base well.
+While previous studies \cite{enhancingSearchBestSelling, relevantSearch}, 
+the conversion rate can be affected by the search results.
+There are some possible reasons why the increase in relevance did not increase the conversion rate.
+The customers may have been searching for information about products and not that interested in buying them.
+Furthermore, the behavior could be explained with the lack of development the search application has seen, 
+which could have affected the behavior of the customers.
+The explanation could also be that the products offered by the e-commerce platform do not satisfy the needs of the customer base well.
 
-In addition, during development it was found that the content in the products is not very searchable.
-For instance, the example with "pesukone" introduced previously.
-Furthermore, meaning that future development could also focus on generating meaningful tokens.
-For instance, mining content from the web about the products and using the previous search terms as a base,
-the already existing \emph{searchTerms} field could be filled with actually searchable content.
+In addition, during development, it was found that the content in the products is not very searchable.
+The future development could focus on generating meaningful tokens,
+for instance, mining content from the web about the products and using the previous search terms as a base.
+The already existing \emph{searchTerms} field could be filled with actually searchable content.
 
 In addition to generating content for the search engine, with properly generating the search token,
 the usage of wildcards in search could be made obsolete.
 Well generated tokens enable the usage of fuzzy search instead of the wildcard, which again allows
 the search engine to match words even though the customer has misspelled it.
-Furthermore, it could drastically increase the usability of the search application in the future as there would not 
+A fuzzy search could drastically increase the usability of the search application in the future as there would not 
 need to write the search term correctly.
 
 
@@ -69,30 +58,25 @@ of different implementation is prolonged.
 While the results from A/B tests are reliable, the time used to conclude them is not feasible.
 
 
-As \citeauthor{relevantSearch} \cite{relevantSearch} said that with search application development, the goal
-is to fail fast, meaning that a new implementation should be tested, and if not working as expected,
+In search application development, the goal
+is to fail fast  \cite{relevantSearch}, meaning that a new implementation should be tested, and if not working as expected,
 it should be disregarded. 
 Using production A/B tests in a fail-fast development is not possible since the tests need to run for days
 to get meaningful results.
 In addition, since the data was collected in different periods and from different countries, the tests
-are not comparable between each other.
+are not directly comparable between each other.
 
 
-In the future, a testing platform purposefully built for testing search engines could be beneficial 
+In the future, a testing platform built for testing search engines could be beneficial 
 to run simulated tests to see what is working.
-The tests concluded for this thesis could have been done possibly in a matter of hours with a testing platform
+The tests concluded for this thesis could have been done in a matter of hours with a testing platform
 that simulates real customers.
-While the results might not have been as precise, still instead of waiting for results from the tests,
-more development could have been done.
+While the results might not have been as precise, more development could have been done.
 In addition, the simulated platform could provide comparable results across different tests since the data used
 could stay more or less the same.
 
 
 
-
-
-This chapter provided an overview of the conclusions drawn from the results and included subjects that could be
-developed in the future.
 While the results of the concluded tests were not optimal as the conversion rate was not increased,
 much was learned during the development.
 Therefore, this thesis proved to be an excellent learning experience in how search engines function at a lower level, 

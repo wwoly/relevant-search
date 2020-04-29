@@ -1,13 +1,12 @@
 
 
-This chapter introduces the individual tests and what was included in each of them, in addition to 
-the results collected from the tests.
-The following results use both measurements, the conversion rate, and the click-through rate as previously introduced.
-Furthermore, the conversion rates in the following tables are the conversion rate of the customers
+This chapter introduces the individual tests, what was included in each of them, and the results collected from the tests.
+The following results use both the conversion rate and the click-through rate (\ref{sec:measurements}).
+The conversion rates in the following tables are the conversion rate of the customers
 that used the search application.
-Also, the CTR shown in the first three tests is measured in the search result page from the subset of customers
-that did not use any filters when they visited the page, and in \emph{Test 4}, the click-through rate included all
-customers.
+The click-through rate (CTR) shown in the first three tests is measured in the search result page from the subset of customers
+that did not use any filters when they visited the page.
+In \emph{Test 4}, the click-through rate included all customers who visited the search result page.
 In the following descriptions, \emph{Variant A} is not referred to 
 since it served as the baseline in all the concluded tests.
 
@@ -119,14 +118,14 @@ While the previous two tests included three different variables, \emph{Test 3} o
 Both \emph{Variant C} and \emph{Variant D} included the same ranking function and multiple queries as 
 \emph{Test 2}.
 However, instead of using \emph{MUST} clauses with multiple search terms, \emph{SHOULD} clause was used.
-Furthermore, this meant that by searching with multiple search terms, all matches that matched any of 
+This meant that by searching with multiple search terms, all matches that matched any of 
 the search terms were included, but the results that matched several terms were boosted accordingly higher.
 
 Figure \ref{fig:search_v3} shows that the CTR of the search result list on the subset of customers who did not 
 use the product filters after searching did not change significantly.
 Still, the conversion rate was increased in both different variants, as shown in Figure \ref{fig:search_v3}.
-The described behavior did not meet expectations, as the same ranking algorithm was utilized as in \emph{Test 2},
-the expected result was that the CTR would have been at a similar level as well.
+The described behavior did not meet expectations because the same ranking algorithm was utilized as in \emph{Test 2}.
+The expected result was that the CTR would have been at a similar level as well.
 
 
 %% ==========================================================
@@ -159,27 +158,28 @@ The fourth and final test was concluded based on the previous tests, introduced 
 In addition to the testing setup used in \emph{Test 2}, this test included a functionality that, while 
 querying the results, queried a suggested search term at the same time.
 Then, if the query did not match any products, the query would be rerun with the suggested word.
-Furthermore, meaning that, for instance, if the customer misspelled a word and it resulted in zero results,
+For instance, if the customer misspelled a word resulting in zero results,
 the suggested word would be searched with, and results with the correct term could be returned.
 
 
-Furthermore, this functionality was designed to be similar to fuzzy search and was easier to implement,
-due to the time limitations, as using the fuzzy search.
-For the future development, the fuzzy search is most likely investigated properly, as fuzzy search does not 
-work with wildcard searches, which were utilized by the queries, it could not be implemented for this thesis.
+This functionality was designed to be similar to the fuzzy search and was easier to implement,
+due to the time limitations of the fuzzy search.
+For future development, the fuzzy search is most likely properly investigated.
+A fuzzy search does not work with wildcard searches, 
+which were utilized by the queries, so it could not be implemented for this thesis.
 
-\emph{Test 4} the three variants again, but in this setup, all the variants utilized the same features.
+\emph{Test 4} had the three variants, but in this setup, all the variants utilized the same features.
 In this test, the three variants mean three different websites in three different countries.
-Furthermore, since the organization has multiple websites across the Nordic countries, it was crucial
+Since the organization has multiple websites across the Nordic countries, it was crucial
 to see if the solution proposed by this thesis performed well in all of the countries.
 
 
 The results, in Table \ref{fig:search_v4}, show a remarkable increase in the CTR of the search result list.
-Therefore, indicating that the relevance of the search result was increased in \emph{Test 4}, at least when
+This indicates that the relevance of the search result was increased in \emph{Test 4}, at least when
 measured with CTR.
-However, the conversion rate was not increased by \emph{Test 4} that much, and in \emph{Variant D} even decreased,
+However, the conversion rate was not increased by \emph{Test 4} that much, and in \emph{Variant D}, it even decreased,
 as shown in Table \ref{fig:search_v4}.
-While the solution in \emph{Test 4} seemed to satisfy the needs of the customers, at least better, the solution did
+While the solution in \emph{Test 4} seemed to satisfy the needs of the customers, the solution did
 not seem to capture the needs of the organization, as the number of sales was not affected that significantly.
 
 %% ==========================================================
@@ -223,11 +223,9 @@ This chapter introduced the four different tests that were concluded for this th
 Each test had separate variants, which were measured from different websites in different countries.
 In summary, the conclude test showed an increase in the click-through rate of the search product lists. 
 However, the primary measurement, the conversion rate, was not significantly affected by the concluded tests.
-The following chapter includes the conclusions that could be drawn from the results, in addition to including
-subjects for future development.
 
 
-
+\newpage
 
 
 

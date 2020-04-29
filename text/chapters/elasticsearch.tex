@@ -1,28 +1,33 @@
 
 \section{Elasticsearch as a search engine}
 \label{sec:elasticsearch}
+This section discusses how Elasticsearch works and how the functionalities are utilized in this thesis.
+First, the section provides an overview of Elasticsearch, before moving on the various text analysis 
+utilized when implementing the new search functionalities to the current search application.
+Lastly, the section describes how the results are searched and scored in Elasticsearch before they 
+are returned to the user.
+
 
 Elasticsearch provides real-time search and analytics for all types of data.
-Furthermore, the data is stored and indexed in a way that fast searches are supported.
+The data is stored and indexed in a way that fast searches are supported.
 In addition, Elasticsearch provides a possibility to go far beyond simple information retrieval and supports
 different aggregations to fetch data efficiently. 
 The distributed nature of Elasticsearch provides additional resiliency when the volume of the data 
 grows. 
-Thus, providing an excellent platform to build a large-scale search application.
 \cite{elasticIntro}
 
 
 The power of Elasticsearch comes from the optimally indexed data structures; for instance, text fields are by default
 indexed as inverted indices with the tokens collected from the fields of the documents.
-Additionally, Elasticsearch enables saving the data to different kinds of data structures depending on the use cases.
+Elasticsearch enables saving the data to different kinds of data structures depending on the use cases.
 For example, an analyzer can be applied to process data from a specific field,
 which creates an own data structure for the field with the data collected by the analyzer.
 \cite{elasticIntro}
 
 
-The following part of this thesis moves on to describe in greater detail 
+The following part of this thesis describes, in greater detail,
 the text analysis tools provided by Elasticsearch utilized in this thesis.
-Furthermore, understanding the tools is necessary because they are used in 
+An understanding of these tools is necessary because they are used in 
 the methods introduced in Section \ref{ch:methods}.
 
 
@@ -31,37 +36,40 @@ the methods introduced in Section \ref{ch:methods}.
 \subsection{Text analysis}
 \label{ss:textAnalysisTools}
 
-Text analysis in Elasticsearch means transforming text to tokens to the inverted index.
-Furthermore, choosing how the text is transformed determines the performance of the search application.
+Text analysis in Elasticsearch means transforming text to tokens, which are stored in the inverted index.
+Choosing how the text is transformed determines the performance of the search application.
 During the analysis, the search engine converts the data from the documents into tokens using analyzers
 and stores the tokens in the internal data structures of the search engine.
-Besides utilizing analyzers to the documents while indexing, optionally, 
+Besides utilizing analyzers to the documents while indexing, 
 the queries can be analyzed with the same analyzers.
 \cite{relevantSearch}
 
 As previously stated, search engines are merely trying to find exact matches the query from the
 inverted index. 
-So, without good tokens in the inverted index,
+Without good tokens in the inverted index,
 the document can be challenging to find with a query that might not exactly match the document.
-Thus, to make the documents more findable, Elasticsearch provides various analyzers by default in addition to
+To make the documents more findable, Elasticsearch provides various analyzers by default and provides
 the capability to create custom analyzers from different tokenizers and token filters 
 \cite{relevantSearch}.
 
 
-In some languages, like Finnish, there are various inflected forms for a word, which can make
-matching the document to the query more difficult for the search.
-So the analyzers can help with making the search term as basic form as possible \cite{relevantSearch}.
-Since, generally, in e-commerce, the users might not use the most effective search terms to describe
+In some languages, such as Finnish, there are various inflected forms for a word, which can make
+matching the document to the query more difficult.
+The analyzers can help by stemming the search term, which means reducing the term into its root form \cite{relevantSearch}.
+For instance, stemming the terms \emph{foxes} and \emph{jumped} to root forms \emph{fox} and \emph{jump}.
+
+
+Generally, in e-commerce, the users might not use the most effective search terms to describe
 what they are searching for, instead of using technical terms, they use familiar terms.
+By reducing all words from documents and search queries into root forms, the products better match
+the search terms used by the customers \cite{relevantSearch}.
 Furthermore, interacting with a search application that does not understand what is being asked from it
 can make users frustrated and might negatively affect their experience on the website \cite{relevantSearch}.
 
-In summary, the creation of the tokens from the documents is a crucial part when creating a relevance-based 
-search application. 
-So, the following part focuses on why the token creation is an essential step in search engines and 
+The following section focuses on 
 how tokens are generated with analyzers provided by Elasticsearch relevant to this thesis.
-Additionally, a selection of the tokenizers and token filters is introduced since a set of custom
-analyzers had to be created to provide the functionality necessary for this thesis.
+Additionally, a selection of the tokenizers and token filters is introduced since a custom
+analyzer had to be created to provide the functionality necessary for this thesis.
 
 %% ==========================================================
 \subsubsection{Extracting features from text}
@@ -75,63 +83,68 @@ Furthermore, tokens should try to anticipate the expectations of the user, which
 highly relevant and targeted results.
 \cite{relevantSearch}
 
-\citeauthor{relevantSearch} \cite{relevantSearch} described the idea of feature modeling in their book.
 In feature modeling, the purpose is to take into consideration the intent of the user, 
 in addition to the ideas conveyed in the indexed documents.
 Additionally, feature modeling ensures that the generated tokens represent the descriptive and meaningful
 features of the queries making understanding the information in the documents as well as the intent of the users.
 For instance, useful features take into account the pluralization and the parts of speech in addition to the specific language
 used in the domain context to make the query and the tokens match.
-The feature modeling is done both in index and search time
-since matching with features that are consistently generated becomes more straightforward. 
-Furthermore, when the features capture both the meaning of the document and the query well, 
+When the features capture both the meaning of the document and the query well, 
 the matches become increasingly relevant.
+The feature modeling is done in both the index and the search time, so the meaning of the term is captured consistently.
 \cite{relevantSearch}
 
-The feature modeling, among many other optimizations tasks, is a constant battle between 
+The feature modeling, among many other optimization tasks, is a constant battle between 
 precision and recall \cite{relevantSearch}.
 In a search application context, precision describes the percentage of documents in the results 
-that are relevant to a query, and recall means the percentage of the relevant documents \cite{relevantSearch}.
+that are relevant to a query, and recall means the percentage of the relevant documents in the results
+\cite{relevantSearch}.
 Precision is calculated with the following formula
 \[ precision = doc_{relevant} / (doc_{relevant} + doc_{irrelevant}) \]
-where the $doc_{relevant}$ describes the number of relevant documents in results, and $doc_{irrelevant}$
-the number of irrelevant documents in the matches.
-Moreover, recall can be calculated with the formula
-\[ precision = doc_{relevant} / (doc_{relevant} + doc_{relevant_{no match}}) \]
+where the $doc_{relevant}$ and $doc_{irrelevant}$ are
+the numbers of relevant and irrelevant documents in the matches,
+respectively recall is calculated with the formula
+\[ recall = doc_{relevant} / (doc_{relevant} + doc_{relevant_{no match}}) \]
 where the $doc_{relevant}$ describes the number of relevant documents in results, 
 and $doc_{relevant_{no match}}$ is the total number of relevant documents that do not match
 the query.
-Generally, higher precision means lower recall, which implies there is an optimal threshold 
+Generally, higher precision means lower recall and vice versa, which implies there is an optimal threshold 
 that could be achieved with optimization.
 In an ideal case, both precision and recall would be 100\%, but that is nearly impossible \cite{relevantSearch}.
 
 
 In this thesis, the trade-off between precision and recall appeared in one of the empirical tests 
 chosen to measure the relevance in the development process.
-Furthermore, the website has three distinct product categories that are standard washing machines,
-washing machines with dryers, and dishwashers.
 In Finnish, all terms
 \emph{pyykinpesukone}, \emph{kuivaava pesukone} and \emph{astianpesukone} 
 are separate product categories, and the query ``pesukone`` was quite common.
 However, most certainly, the major part of Finnish speakers would tell that ``pesukone`` does not mean 
 \emph{astianpesukone}, and most likely, the best match would be \emph{pyykinpesukone}, or 
 at least it should be included near the very top of the results.
-Therefore, teaching a search engine to know that the previous query 
+By exactly matching ``pesukone`` to a term in the inverted index increases precision as only \emph{kuivaava pesukone} category 
+is included, but decreasing recall as the \emph{pyykinpesukone} category is left out from the product lists.
+Vice versa, if ``pesukone`` matches all words that contain it, the precision is decreased, and recall increased as all
+three categories are included.
+
+Teaching a search engine to know that a query 
 should not only match the exact word found from the inverted index 
 but to one word which does not start with the query itself can swiftly become an optimization problem.
-
-
-In summary, this section introduced the importance of feature modeling in analysis and 
-how it can be found in practice by giving an example of a problem found during development.
-Generally, similar problems during development are not easily solvable in practice but somewhat
+Generally, similar problems are not easily solvable in practice but somewhat
 tedious and time-consuming to solve and might need additional feature extraction.
-Furthermore, the following sections introduce analyzers, which are the tools responsible
-for collecting the tokens from the documents.
+
+
+% In summary, this section introduced the importance of feature modeling in analysis and 
+% how it can be found in practice by giving an example of a problem found during development.
+
+% Furthermore, the following sections introduce analyzers, which are the tools responsible
+% for collecting the tokens from the documents.
 
 
 %% ==========================================================
 \subsubsection{Analyzers}
 
+This section introduced different analyzers, which are the tools responsible
+for collecting the tokens from the documents.
 In Elasticsearch, an analyzer is used in the text analysis step to extract tokens from the documents \cite{elasticIntro}.
 The usage of the analyzer is configurable, and multiple analyzers can be used for each field \cite{relevantSearch}.
 Even though there can be multiple analyzers defined for a field, only one can be utilized at a time
@@ -143,7 +156,7 @@ on an existing application complicated.
 For instance, if a search application uses index A, then a new index B must be created, and 
 all documents must be re-indexed,
 after which the search application can be told to use the new index B.
-Furthermore, this can cause issues in some data-sensitive applications because of the index creation, 
+Creating multiple indices can cause issues in some data-sensitive applications because of the index creation, 
 and data replication is not instantaneous.
 
 
@@ -152,23 +165,23 @@ matching ability of the inverted index \cite{relevantSearch}.
 Furthermore, analysis enables expressing the essential features of the search application as tokens \cite{relevantSearch}.
 The analyzers consist of tokenizers and token filters, and Elasticsearch provides a selection of 
 built-in analyzers \cite{elasticIntro}.
-The following part introduced the built-in analyzers utilized in this thesis.
-However, a custom analyzer can be created and can be useful in specific situations in extracting the tokens from 
+A custom analyzer can be created and can be useful in specific situations in extracting the tokens from 
 a field.
 For instance, parts from an email address can be extracted to create tokens from it, 
 which can make searching for the email more efficient \cite{relevantSearch}.
 
 
-First, the standard analyzer is the default analyzer used by Elasticsearch, and it is used if none other 
-is specified and is typically a first analyzer used in a search application \cite{elasticIntro, relevantSearch}.
-Furthermore, the standard analyzer divides input text into tokens on word boundaries, defined
+In Elasticsearch, a standard analyzer is used if none other is specified, and 
+it is typically the first analyzer used in a search application \cite{elasticIntro, relevantSearch}.
+The standard analyzer divides input text into tokens on word boundaries, defined
 by the Unicode Text Segmentation (UTS) algorithm, and works well for most languages \cite{elasticIntro}.
 Besides creating tokens from the input, the analyzer converts all the tokens to lowercase \cite{elasticIntro}.
 Typically, the standard analyzer results have high precision, but low recall
 since it does not capture features of the text well, and user query must match the document exactly
 \cite{relevantSearch}.
 
-Secondly, the language analyzers work similarly to the standard analyzers. 
+
+The language analyzers work similarly to the standard analyzers. 
 However, there are some minor differences between the languages 
 provided by Elasticsearch by default.
 For instance, the English analyzer will convert the following sentence:
@@ -179,9 +192,9 @@ label={lst:analyzerInput},
 frame=single]
     The QUICK brown foxes jumped over the lazy dog!
 \end{lstlisting}
-into distinct tokens, convert all text to lowercase, remove the stop words (''the''), and
-additionally stem the words (foxes $\rightarrow$ fox, jumped $\rightarrow$ jump, lazy $\rightarrow$ lazi).
-The output of the analyzer is the following terms that are added to the inverted index:
+into distinct tokens, convert all text to lowercase, remove the stop words, and
+additionally stemming the words (see Section \ref{ss:textAnalysisTools}).
+The output of the analyzer is the following list of terms that are added to the inverted index:
 \cite{elasticIntro}
 \begin{lstlisting}[
 caption={Output of the English analyzer \cite{elasticIntro}},
@@ -191,47 +204,49 @@ frame=single]
     [ quick, brown, fox, jump, over, lazi, dog ]
 \end{lstlisting}
 
+
 As shown in the example above, the language analyzers try to capture the meaning of the words and 
 carry the meaning to the inverted index \cite{relevantSearch}.
-As previously stated, a search engine is merely a token-matching system, and it does not know 
-about the meaning of the tokens, using analyzers to try to capture the meaning and 
-the intent of the user, the token matching becomes more straightforward for the search engine 
+A search engine is merely a token-matching system that does not know 
+about the meaning of the tokens \cite{relevantSearch}.
+The purpose of analyzers is to capture the meaning and the intent of the user to make better tokens 
 \cite{relevantSearch}.
-However, the built-in analyzers might not be enough for specific application domains
-or might perform poorly on some languages.
-So, the following part introduces a selection of the tokenizers and token filters built-it in
-Elasticsearch, which are used to build custom analyzers to target specific issues.
+The built-in analyzers may not be enough for specific application domains
+or may perform poorly on some languages.
+In Elasticsearch, the tokenizers and token filters, introduced in the following sections, 
+facilitate the building of customer analyzers to target specific issues with the built-in analyzers.
 
 
 %% ==========================================================
 \subsubsection{Tokenizers}
 
-Tokenizers are the part of the analyzers that create the tokens from input words.
-A tokenizer receives a stream of characters and dismantles them to tokens and outputs a stream
+
+Tokenizers create the tokens from input words.
+A tokenizer receives a stream of characters as an input and dismantles them to tokens and outputs a stream
 of tokens \cite{elasticIntro}.
 In addition, tokenizers are responsible for collecting the position of each term, and the start 
-and the end character offsets of the original word that the term represents \cite{elasticIntro}, 
-so it could be saved to the inverted index as introduced in Section \ref{ss:invertedIndex}.
-The collected position is used in a phrase or word proximity queries, and 
+and the end character offsets of the original word that the term represents 
+to be saved to the inverted index (Section \ref{ss:invertedIndex}) \cite{elasticIntro}.
+The collected positions are used in a phrase or word proximity queries, and 
 the start and end character offsets are utilized in highlighting the matches in the
 search results \cite{elasticIntro}.
-The following part introduces the two main tokenizers, a standard tokenizer and 
-an edge-N-gram tokenizer, both utilized in this thesis.
+Two different tokenizers, a standard tokenizer and 
+an edge-N-gram tokenizer, were utilized in this thesis.
 
 
 As explained earlier, the standard and language analyzers divide the words into tokens,
 both utilize standard tokenizer in doing that. 
 Rather than creating the tokens, the analyzers utilize tokenizers and token filters in token creation.
 The standard tokenizer uses the UTS algorithm to divide the text,
-and also it removes punctuation symbols from the input.
-Furthermore, the standard tokenizer works well in most languages, and it is used as the default in Elasticsearch.
+and it also removes punctuation symbols from the input.
+The standard tokenizer works well in most languages, and it is used as the default in Elasticsearch.
 \cite{elasticIntro}
 
 
-The second tokenizer utilized is edge-N-gram tokenizer, that first divides the text into words when encountering
+The is edge-N-gram tokenizer first divides the text into words when encountering
 specified characters, for instance, whitespace or punctuation. 
-Then the tokenizer returns an N-gram of the single word anchored to the start of the word.
-Furthermore, $N$ means the max amount of characters in the resulting output of the tokenizer.
+Then, the tokenizer returns an N-gram of the single word anchored to the start of the word.
+$N$ means the maximum amount of characters in the resulting output of the tokenizer.
 For instance, Listing \ref{lst:edgeNGramInput} shows the input to the edge-N-gram tokenizer, and
 Listing \ref{lst:edgeNGramOutput} shows the output with $N = 5$, where the words are divided into tokens 
 with a minimum of two characters and a maximum of five characters.
@@ -254,57 +269,58 @@ that should be included in the generated tokens.
 \cite{elasticIntro}
 
 
-As was mentioned earlier, the built-in language analyzers perform poorly on some languages, which became
+The built-in language analyzers perform poorly on some languages, which became
 a problem during the development of the new search functionalities.
 The Finnish language analyzer had a hard time capturing some of the plural forms in the Finnish language.
 For instance, capturing the features from the words \emph{langaton} and \emph{langattomat} was difficult,
 because of the addition `t` character added in the plural form of the word wireless.
 
-In this thesis, an edge-N-gram tokenizer was utilized in generating the tokens from text to solve the described problem,
-which purpose was to mimic the behavior of the language analyzer and try to capture the meaning of the words
+
+In this thesis, an edge-N-gram tokenizer was utilized in generating the tokens from text to solve the problem described above.
+The aim was to mimic the behavior of the language analyzer and try to capture the meaning of the words
 by capturing the start characters.
 While the usage of edge-N-gram tokenizer increased the recall of the search results, 
 it quickly decreased the precision since if the minimum length for a token were defined too low,
-the results would include almost all products.
-Before the generated tokens are ready and could be added to the inverted index, a set of token filters
-should be applied, which are introduced in the following part.
-They are an essential part of the analysis process since the tokenizers are not enough to generate
-consistent tokens to the inverted index.
-Since tokenizers do not modify the words, only divide them, the purpose of token filters is
-to create consistent tokens, which make the documents easier to find.
+the results would include almost all searchable products.
+Before the generated tokens are added to the inverted index, a set of token filters
+should be applied.
 
 
 %% ==========================================================
 \subsubsection{Token filters}
 
-The purpose of a token filter is to modify the stream of tokens output by a tokenizer.
-Furthermore, Elasticsearch provides various built-in token filters. 
-The following part introduces a selection of the token filters, introduced in the documentation of 
-Elasticsearch \cite{elasticIntro}, relevant to this thesis and explains why those were utilized.
+
+Token filters are an essential part of the analysis process since the tokenizers are not enough to generate
+consistent tokens to the inverted index.
+Since tokenizers do not modify the words, only divide them, the purpose of token filters is
+to create consistent tokens by modifying the stream of tokens output by a tokenizer.
+Furthermore, Elasticsearch provides various built-in token filters \cite{elasticIntro}. 
+Token filters relevant to this thesis are introduced below.
+
 
 \begin{itemize}
     \item \textbf{Lowercase token filter} modifies the stream of tokens and converts the characters to lowercase,
-    making the tokens consistent and enabled case insensitive queries.
+    making the tokens consistent and enabling case insensitive queries.
     A lowercase filter is in the core of every built-in analyzer Elasticsearch offers.
     
     \item \textbf{ASCII folding token filter} converts the alphabetic, numeric, and symbolic Unicode characters
-    to ASCII characters if one exists. 
-    Utilizing it allowed the queries to match the words regardless if 'a' or 'ä' character was used.
+    to ASCII characters, if one exists. 
+    Utilizing it allowed the queries to match the words regardless if Scandinavian characters such as 'ä' instead of 'a' was used.
     Generally, all search engines utilize a similar functionality to match documents regardless
     of the special characters.
     
     \item \textbf{Edge-N-gram token filter} implements the same functionality as the edge-N-gram tokenizer.
-    The reason for using the token filter is if additional filters would be needed to be applied before 
-    the tokens are split to N-grams.
+    The need for using the token filter instead of tokenizer is if additional token filters are needed before splitting the tokens
+    into N-grams.
     For instance, the edge-N-gram from the end of the word must utilize the token filter, since the 
     words must be reversed with a filter before generating the N-gram.
     
     \item \textbf{Conditional token filter} uses a condition and a list of subfilters and applies the 
-    subfilters to the token only if the token matches the condition; otherwise, returning the original token.
+    subfilters to the token only if the token matches the condition returning otherwise the original token.
     For this thesis, a search time edge-N-gram filter was created, which used a condition to determine 
     the length of the search term.
-    Furthermore, if the search term is longer than the average length search term, which was 6, 
-    a subfilter would apply an edge-N-gram token filter to the term.
+    If the search term was longer than the average length search term, which was 6, 
+    a subfilter applied an edge-N-gram token filter to the term.
     
     \item \textbf{Stemmer token filter} is used in the language analyzers to try to capture the
     meaning of the word by trying to collapse multiple forms of the same words into one.
@@ -316,20 +332,19 @@ Elasticsearch \cite{elasticIntro}, relevant to this thesis and explains why thos
     
     \item \textbf{Unique token filter} is used to remove the duplicate tokens from the token stream. 
     So, if a text has multiple duplicate terms, which bring no value, then this filter could be applied.
-    However, the usage of this token filter might affect the scoring of the documents, 
-    so this should be used only to bring additional tokens to the index from the fields, 
+    Since the usage of this filter may affect the scoring of the documents, 
+    it should be used only to bring additional tokens to the index from the fields, 
     where duplicates are irrelevant.
     
 \end{itemize}
 
 
-
-This section has provided a detailed overview of the text analysis tools relevant to the thesis.
-The tools introduced here were used to build a custom analyzer that was designed to capture 
-the features from the words similar to the language analyzer, but additionally to generate smaller tokens
-to make the matching easier.
-In addition to the usage of the text analysis tools in search time,
-the section that follows introduces the necessary search functionalities of Elasticsearch.
+% This section has provided a detailed overview of the text analysis tools relevant to the thesis.
+% The tools introduced here were used to build a custom analyzer that was designed to capture 
+% the features from the words similar to the language analyzer, but additionally to generate smaller tokens
+% to make the matching easier.
+% In addition to the usage of the text analysis tools in search time,
+% the section that follows introduces the necessary search functionalities of Elasticsearch.
 
 
 %% ==========================================================
@@ -337,68 +352,67 @@ the section that follows introduces the necessary search functionalities of Elas
 \label{ss:searchElasticsearch}
 
 
-In addition to the text analysis tools, Elasticsearch supports complex queries, additionally providing
+In addition to the text analysis tools, Elasticsearch supports complex queries and provides
 analyzing capabilities to the queries \cite{elasticIntro}.
-The following part introduces briefly how the queries can be used to collect metadata about the results 
+This section introduces briefly how the queries can be used to collect metadata about the results 
 and what is the difference between the filter and the query context, 
 before continuing to more specific parts of the search time.
 
 
 The metadata about the results that match the query is collected with aggregations, 
 also known as facets \cite{elasticIntro}.
-Furthermore, the typical use case for aggregations is the filters in lists on websites.
-For instance, generally, most websites have filters in the lists with products, 
-like search result pages \cite{relevantSearch}.
-Furthermore, aggregations allow the query to collect data about the matching documents 
+A typical use case for aggregations is the filters in lists on websites.
+Aggregations allow the query to collect data about the matching documents 
 while searching the results from the inverted index without returning all the results to 
 the end-user \cite{relevantSearch}.
 For instance, the number of products in individual categories can be collected and constructed to 
 a search filter shown on the search result page.
-While, the aggregations are out of the scope of this thesis, since the current search application already
-utilizes them, \citeauthor{relevantSearch} \cite{relevantSearch} recommended that every website should have
+\citeauthor{relevantSearch} \cite{relevantSearch} recommend that every website should have
 a selection of filters in product lists.
-Furthermore, the filters provide useful feedback to the user about
+However, the aggregations are out of the scope of this thesis, since the current search application already
+utilizes them.
+The filters also provide useful feedback to the user about
 the results of the submitted query \cite{relevantSearch}.
 
 
-While querying in Elasticsearch, there are two different contexts, filter, and query. 
-The first, filter context, answers the question, whether the document matches a query
+While querying in Elasticsearch, there are two different contexts filter and query. 
+The filter context tells whether the document matches a query
 by returning a boolean value, which is used to filter out the documents from the results \cite{elasticIntro}.
-The other, query context, answers the question, how well does the document match a query,
+The query context tells how well the document matches a query,
 providing a relevance score about the match \cite{elasticIntro}.
-Furthermore, the relevance score, also known as the content score, is used by scoring functions
+The relevance score, also known as the content score, is used by scoring functions
 to reflect the score for the content, and additional business scores can be added to it \cite{elasticIntro}.
 
+Since the relevancy score is calculated based on the query context, it is to differentiate
+the requirements a document must fulfill to the filter context.
+Otherwise, it can affect the relevancy score of the document in an unexpected way.
+For instance, the current search application has multiple rules that a product must match 
+before it should be in the search results. 
+Most of these rules define if a product is active.
+If the rules are constructed into the query rather than as a filter, they
+distort the actual relevance score of the documents, 
+which in some cases can lead to unexpected scoring of the results.
 
-So, requirements a document must fulfill are essential to add as filters to the query; 
-otherwise, the score can affect the end score.
-For instance, the current search application has multiple rules that a product must match before it 
-should be in the search results; mostly, the rules define if a product is active.
-If the rules are constructed into the query rather than as a filter, it affects the relevance score, 
-distorting the actual relevance score of the documents, 
-which in some cases can lead to results that are not scored as 
-they would typically be depending on the underlying rules.
 
-
-While this overview provided a brief introduction to how searching works in Elasticsearch,
-the following part provides additional detail on the necessary subjects.
-Firstly, the query syntax differs from the syntax, traditionally used in information retrieval, 
-secondly, how the text analysis tools introduced in Section \ref{ss:textAnalysisTools}.
-Lastly, the different scoring functions built-in to Elasticsearch and how those were
-utilized in this thesis to create a custom ranking algorithm for the search application. 
+% While this overview provided a brief introduction to how searching works in Elasticsearch,
+% the following part provides additional detail on the necessary subjects.
+% Firstly, the query syntax differs from the syntax, traditionally used in information retrieval. 
+% Secondly, how the text analysis tools introduced in Section \ref{ss:textAnalysisTools}.
+% Lastly, the different scoring functions built-in to Elasticsearch and how those were
+% utilized in this thesis to create a custom ranking algorithm for the search application. 
 
 
 
 %% ==========================================================
 \subsubsection{Query syntax}
 
-Searching in Elasticsearch happens through the Query API, and under the hood, 
-Elasticsearch uses Lucene \cite{elasticIntro}.
+Searching in Elasticsearch is made through the Query API, which relies on Lucene \cite{elasticIntro}.
 Lucene is a search engine software library developed by Apache.
-Furthermore, the Lucene supports various types of data collection techniques in addition to 
-the basic queries from Information Retrieval (IR) \cite{relevantSearch}.
+Lucene supports various types of data collection techniques in addition to 
+the basic information retrieval queries \cite{relevantSearch}.
 
-For instance, the basic boolean query operators (AND/OR/NOT) from IR in Lucene is implemented as Lucene operators (MUST/SHOULD/NOT).
+The Lucene query syntax differs from the syntax, traditionally used in information retrieval.
+For instance, the basic boolean query operators (AND/OR/NOT) are implemented as Lucene operators (MUST/SHOULD/NOT).
 While the basic functionalities are like the basic boolean operators, 
 the Lucene operators provide more flexibility than the basic methods.
 Because the individual operators describe the operation for individual terms instead of the relationship between the terms,
@@ -407,8 +421,8 @@ the query with basic boolean operators is generally more complex than the same q
 
 Listing \ref{lst:luceneOperations} shows a query with Lucene query syntax, where a matching document must contain a term \emph{cat},
 should contain a term \emph{black}, and must not contain a term \emph{dog}.
-While the same query from Listing \ref{lst:luceneOperations} can also be implemented with the basic boolean operators,
-Listing \ref{lst:basicOperations} shows that it becomes more complex and is not as readable as with the Lucene operators.
+The same query can also be implemented with the basic boolean operators.
+Listing \ref{lst:basicOperations} shows that the query becomes more complex and is not as readable as with the Lucene operators.
 \cite{relevantSearch}
 \begin{lstlisting}[
 caption={Example query with the Lucene operators \cite{relevantSearch}},
@@ -428,41 +442,39 @@ frame=single]
 
 From a relevance standpoint, the MUST operator provides more relevant results to the query 
 yielding in documents that match all parts of the query \cite{relevantSearch}.
-However, the operator also would not return any results if a document does not contain all terms present in the query \cite{relevantSearch}.
-Since, showing search pages with zero results to customers in an e-commerce application should be avoided \cite{zeroResults},
-the SHOULD operator might be more applicable in some cases, since it provides resiliency against spelling mistakes.
-Currently, the search application only utilizes MUST operators, so in this thesis, a test with SHOULD operators was concluded
+However, the operator also returns no results if a document does not contain all terms present in the query \cite{relevantSearch}.
+Since showing search pages with zero results to customers in an e-commerce application should be avoided \cite{zeroResults},
+the SHOULD operator might be more applicable in some cases, because it provides resiliency against spelling mistakes.
+Since the search application currently utilizes only MUST operators, a test with SHOULD operators was concluded
 to confirm the presumption that the MUST provides more relevant search results in the current e-commerce search application.
 
 
 
 %% ==========================================================
 \subsubsection{Matching search terms to tokens}
+\label{ss:matchingTokens}
 
-When a query is submitted, the same analyzers are usually applied to the search terms as were applied 
-when the index was created, making the tokens consistent
+When a query is submitted, the same analyzers that were applied when the index was created, 
+are usually applied to the search terms to make the tokens consistent
 \cite{relevantSearch}.
 Analyzers used by default, both in index time and in search time, are standard analyzers for text fields,
-but the analyzer that should be used for a specific field can be changed when constructing the query.
+but the analyzer that should be used for a specific field can be changed when constructing the query
 \cite{elasticIntro}.
 By default, if an analyzer is specified, the same analyzer is used both in index time and in query time.
 However, a different search time analyzer can be defined when creating the index, making the search engine
 use different analyzer for the search term as used while indexing the document \cite{relevantSearch}.
 
 
-While the reason for using the same analyzers is to keep the token generation consistent \cite{relevantSearch}, 
-in this thesis, a different search time analyzer was necessary for the custom analyzer to restrict 
+In this thesis, a different search time analyzer was necessary for the custom analyzer to restrict 
 the generation of the N-grams in the search terms. 
-Most of the problems caused by using the language analyzers were that they did not capture the features
-from longer than average search terms well.
-So, the custom N-grams were only generated from longer terms in search time, 
+Most of the problems of the language analyzer were caused by not capturing the features
+from longer than average search term well.
+The custom N-grams were only generated from longer terms in search time 
 while allowing the generation of smaller tokens in index time.
-Furthermore, when the N-grams were generated from shorter words, the recall of the search increased.
+When the N-grams were generated from shorter words, the recall of the search increased.
 However, the precision of the search results decreased significantly as more irrelevant matches were included.
 
 
-While the indexing has generated tokens to the inverted index, and no matter how good the feature modeling has been
-still without special handling of the search terms, it can only be utilized with full search terms.
 To enable the search-as-you-type feature or to search with incomplete search terms, a wildcard search is 
 a useful tool \cite{relevantSearch}.
 It provides the possibility to add a '*'-sign to the end or the start of the search term, which matches one or more
@@ -470,89 +482,84 @@ terms and enables the search with incomplete search terms or additionally can he
 the one introduced in Section \ref{ss:extrackingFeatures}.
 
 
-However, the overuse of wildcards can also introduce a relevance problem, by increasing the recall and decreasing 
-the precision, especially when wildcards are added to both ends of a shorter search term. 
-The current solution used added a wildcard to the start and end of each term, which turned out to be necessary
+However, the overuse of wildcards can introduce a relevance problem, where the recall increases, and 
+the precision decreases, especially when wildcards are added to both ends of a shorter search term. 
+The current solution adds a wildcard to the start and end of each term, which turned out to be necessary
 due to the current limitations of the content like the example in Section \ref{ss:extrackingFeatures}.
-So, to solve the problem of providing low precision, an implementation that boosts exact matches 
-by adding a score to the matches that exactly matches the query.
-Furthermore, resulting in ranking the more relevant content closer to the top, thus, increasing
+To solve the problem of providing low precision, an implementation that boosts exact matches
+by adding a score to them was created.
+The query ranked more relevant content closer to the top of the search results, thus, increasing
 the relevance of the top search results.
 
 
-In addition to the wildcard search, another functionality, which enabled the searching with incomplete terms, 
+Another functionality, which enabled the searching with incomplete terms, 
 is fuzzy search \cite{relevantSearch}.
 Fuzzy search matches the tokens that are similar to the search term \cite{elasticIntro}. 
-Furthermore, the similarity is calculated by calculating the one-character 
+The similarity is determined by calculating the one-character 
 changes necessary to match the search term to a token in the inverted index \cite{elasticIntro}.
-To create matches fuzzy search creates a set of all possible variations from the search term within
-specified edit distance \cite{elasticIntro}.
+A fuzzy search creates a set of all possible variations from the search term within a specified edit distance
+and uses them to find matches from the inverted index \cite{elasticIntro}.
 For instance, the variations include changing, removing, or inserting characters, or transposing two adjacent characters 
 \cite{elasticIntro}.
 
 
 While the fuzzy search is designed to fix the typing errors of the search terms, 
 there are other ways to factor in the typing errors, 
-like the search term suggestion, which is included in this thesis instead of the fuzzy search.
+such as the search term suggestion, which is included in this thesis instead of the fuzzy search.
 During the implementation, the fuzzy search was investigated.
-However, a similar problem with precision and recall arose as did with the edge-N-gram. 
+However, a similar problem with precision and recall arose as it did with the edge-N-gram. 
 If the fuzziness was included in shorter search terms, 
-due to the static edit distance, too many irrelevant results were found.
+too many irrelevant results were found, due to the static edit distance.
 In addition, the fuzzy search cannot be used with the wildcard search \cite{elasticIntro},
 which the current solution relied on heavily.
-So, the fuzzy search was replaced with term suggestion, when no results were found, due to the time limitations
-caused by the above problem.
-The result of the term suggestion implementation showed that suggesting and automatically searching with a 
-term was effective.
-Therefore, indicating that the fuzziness might be beneficial and should be investigated further and probably included and tested 
+For these reasons, the fuzzy search was replaced with term suggestion, when no results were found.
+The results showed that suggesting and automatically searching with a term was effective.
+Therefore, the fuzzy search might be beneficial and should be investigated further and probably included and tested 
 in the future.
 
-
-In summary, the above part introduced in necessary detail how the tokens used to find a match are generated and manipulated.
-While providing more relevant to the top, there is still a need to add business scores to the scoring of the documents.
-Thus, the following part introduces scoring functions that are provided by Elasticsearch and 
-how this thesis utilized them to provide relevant results to the users.
 
 
 %% ==========================================================
 \subsubsection{Scoring documents}
 
-
+This section introduces scoring functions that are provided by Elasticsearch and 
+how the score for the documents is calculated.
 As a base in the content score calculation in Elasticsearch is the following formula
-\[ term\ frequency\ /\ inverse\ document\ frequency \]
+\[ term\ frequency\ \times\ inverse\ document\ frequency \]
 to calculate how well a term matches a document \cite{relevantSearch}.
-Furthermore, both values are already collected to the inverted index during indexing, as introduced 
+A high score indicates that the word is important to a document.
+Both frequencies are already collected during indexing, as introduced 
 in Section \ref{ss:invertedIndex}.
-Optionally, the base calculation can be changed, but in this thesis, it was not necessary, so introducing it
-in more detail is not necessary.
+Optionally, the base calculation can be changed, but in this thesis, it was not necessary.
 
 
-\citeauthor{relevantSearch} \cite{relevantSearch} argued that relevant search results in the e-commerce
-context must not only meet the needs of the user but meet the needs of the business.
-Furthermore, to achieve this, a business score must be added to the document, in addition to the content score
+\citeauthor{relevantSearch} \cite{relevantSearch} argue that relevant search results in the e-commerce
+context must not only meet the needs of the user but also meet the needs of the business.
+To achieve this, besides a content score, a business score must be added to the document
 \cite{relevantSearch}.
 To apply additional scores to the documents, Elasticsearch provides built-in scoring functions
-that can be applied to create compound queries \cite{elasticIntro}.
-Moreover, the compound queries wrap other queries inside them to either combine the resulting scores
+to create compound queries \cite{elasticIntro}.
+The compound queries wrap other queries inside them to either combine the resulting scores
 or to switch from the query to the filter context \cite{elasticIntro}.
 
 
 This thesis utilizes two types of compound queries that are boolean queries and function score queries.
-First, the boolean queries are the default query type for combining multiple queries with the query clauses, 
+The boolean queries are the default query type for combining multiple queries with the query clauses 
 \emph{must}, \emph{should}, \emph{must\_not}, and \emph{filter} \cite{elasticIntro}.
-For instance, each of the query clauses is used in the current rules about product activity, mentioned
+The first three boolean queries map to the Lucene query syntax and last means to the filter context. 
+For instance, each of the query clauses is used in the current rules about product activity, as mentioned
 earlier.
-In addition, the boolean queries execute \emph{must} and \emph{should} clauses in the query context, 
+In the boolean queries \emph{must} and \emph{should} clauses are executed in the query context, 
 and \emph{must\_not} and \emph{filter} clauses are executed in the filter context \cite{elasticIntro}.
 
 
-Second, the function score queries are utilized in the ranking function implemented in this thesis.
-Furthermore, it provides the ability to modify the content scores returned by the main query and
-take into account other configured functions when calculating new scores for the document \cite{elasticIntro}.
-Figure \ref{fig:function_score} provides an example of the functions score query that was tested 
+The function score queries are utilized in the ranking function implemented in this thesis.
+It provides the ability to modify the content scores returned by the main query and
+takes into account other configured functions when calculating new scores for the document \cite{elasticIntro}.
+Figure \ref{fig:function_score} provides an example of a function score query that was tested 
 during the development phase of this thesis.
 The function score query wraps the main query inside, seen on line 15 of the figure, 
-and adds results from several mathematical functions to the resulting content scores from the inner query.
+and adds results of several mathematical functions to the resulting content scores from the inner query.
 
 
 \begin{figure}
@@ -563,31 +570,28 @@ and adds results from several mathematical functions to the resulting content sc
 \end{figure}
 
 
-In addition, the functions score query provides a possibility to define the scoring mode, which defines
+The function score query provides a possibility to define
 how the scores from the individual functions are combined \cite{relevantSearch}.
-Figure \ref{fig:function_score} shows the query has \emph{sum} as the score mode, which calculates
+Figure \ref{fig:function_score} shows the query has \emph{sum} as the \emph{score\_mode}, which calculates
 the scores for the documents with the following formula \cite{relevantSearch}
 \[ score_{total} = w_1 \times score_{views} + w_2 \times score_{orders} + w_3 \times score_{content} \]
 The field value factor functions fetch a decimal value from the document and use it as the score
-for the functions; additionally, a missing value from the document is replaced
+for the functions. A missing value from the document is replaced
 with the value defined in the missing parameter \cite{elasticIntro}.
 
 
-In addition, the above formula uses weights for each value when calculating the total score,
-using weights enabled changing the emphasis on different functions more dynamic \cite{relevantSearch}.
+The above formula uses weights for each value when calculating the total score to enable dynamically 
+changing the weight of the different functions \cite{relevantSearch}.
+The weights from the formula can also be seen in Figure \ref{fig:function_score}.
+The individual weights are defined inside each function (Figure \ref{fig:function_score}), and the last weight
+in the figure is the content weight $w_3$ presented.
 As was stated before, the ranking of the search results is an optimization problem, and finding
 the optimal threshold can be automated to find the optimal solution by testing different weights.
-Moreover, the individual weights are defined inside each of the function, the last weight
-with no function defined is the content weight $w_3$ presented in the formula above.
 
 
-The previous section described how the business score is calculated and added to the content score
-and mentioned that the content score is a result of the inner query from Figure \ref{fig:function_score}.
-This next part introduces an example of a query utilized in this thesis and summarizes the search
-functionalities introduced in this section.
-Figure \ref{fig:query_string} shows an example query that was used during development, which
-utilizes a query string query provided by Elasticsearch.
-Furthermore, the query string query allows the creation of complex queries that include wildcard characters,
+Figure \ref{fig:query_string} shows an example query that was used during development.
+This query utilizes a query string query provided by Elasticsearch.
+The query string query allows the creation of complex queries that include wildcard characters,
 searching across multiple fields, and the usage of different functionalities.
 
 
@@ -599,43 +603,41 @@ searching across multiple fields, and the usage of different functionalities.
 \end{figure}
 
 
-Figure \ref{fig:query_string} shows the search across multiple fields as an array of field names 
-in the query.
-In addition, the query uses boosts on the individual fields \emph{title} and \emph{manufacturerName}.
+The example query defines a structured search across multiple fields as an array of field names.
+The query uses boosts on the individual fields \emph{title} and \emph{manufacturerName}.
 In Elasticsearch, the boost for a specific field is defined with a circumflex followed by the multiplier
 that multiplies the base content score for the field \cite{relevantSearch}.
 In addition to field boosts, the example query utilizes the previously introduced search time 
-edge-N-gram analyzer to match the term to category and manufacturer of the product.
+edge-N-gram analyzer to match the term to a category and the manufacturer of the product.
 
-The search terms are shown in the query variable in Figure \ref{fig:query_string}.
+
+The search terms are shown in the query variable.
 Both terms are surrounded by the wildcard characters to allow the terms to be matched with
 characters missing from either end.
-A query must enable \emph{analyze\_wildcard} to utilize the wildcard search, since, by default,
-Elasticsearch does not do wildcard searches \cite{elasticIntro} since the computationally costly nature
+A query must enable \emph{analyze\_wildcard} to utilize the wildcard search \cite{elasticIntro}.
+Elasticsearch does not do wildcard searches by default because of the computationally costly nature
 of the wildcard search \cite{relevantSearch}.
-
 
 
 As default queries use a \emph{best\ fields} functionality, which means when searching across multiple fields,
 only the best matching field is included in the content score.
-However, the query in Figure \ref{fig:query_string} introduces a \emph{tie\_breaker} variable 
-that softens the \emph{best\ fields} functionality by introducing a weight 
-that the other fields are multiplied with and included in the content score calculation 
+Utilizing the \emph{best\ fields} functionality may hide other fields that may be relevant
 \cite{relevantSearch}.
-\citeauthor{relevantSearch} \cite{relevantSearch} discovered that using only the \emph{best\ fields} can
-lead to excluding some fields, especially when using boosts for individual fields.
-So, to include all the fields in the content score, the \emph{tie\_breaker} variable was introduced to the query, 
-which provided better relevance for the search results during the development phase.
+The query in Figure \ref{fig:query_string} introduces a \emph{tie\_breaker} variable 
+that softens the \emph{best\ fields} functionality by introducing a weight 
+with which the other fields are multiplied before they are included in the content score calculation 
+\cite{relevantSearch}.
+Including all fields in the content score provided better relevance for the search results during the development phase.
 
 
 
-This section has described the functionalities of Elasticsearch used in this thesis.
-The section started with an overview, before moving on to introduce the different text analysis
-tools provided by Elasticsearch.
-Lastly, the section described what happens during searching and how queries and scoring functions can be
-utilized to get a score of how well the query matches to the search results.
-Furthermore, using the score becomes increasingly relevant as the next sections introduce,
-what relevant search results are and what kinds of ranking algorithms have been introduced in previous literature.
+% This section has described the functionalities of Elasticsearch used in this thesis.
+% The section started with an overview, before moving on to introduce the different text analysis
+% tools provided by Elasticsearch.
+% Lastly, the section described what happens during searching and how queries and scoring functions can be
+% utilized to get a score of how well the query matches to the search results.
+% Furthermore, using the score becomes increasingly relevant as the next sections introduce,
+% what relevant search results are and what kinds of ranking algorithms have been introduced in previous literature.
 
 
 

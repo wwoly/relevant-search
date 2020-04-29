@@ -9,8 +9,8 @@ Besides, search engines are an integrated part of many websites, including e-com
 platforms.
 In this thesis, the focus was to increase the relevance of the search results
 of an existing e-commerce platform and analyze how the conversion rate is affected.
-Furthermore, the conversion rate describes the percentage of the visitors that 
-bought something from the total number of visitors on a website, and it is widely
+Furthermore, the conversion rate describes the percentage of visitors that 
+bought something from the total number of visitors on a website, and it is a widely
 used measurement in e-commerce.
 
 
@@ -18,20 +18,20 @@ Previous research has focused mostly on studying different ranking algorithms, b
 many are included in the existing search engine frameworks.
 For this thesis, the purpose was to investigate how the methods from previous 
 research could be utilized in an e-commerce platform with real customers.
-Furthermore, the concluded tests were over six weeks and included tens of thousands
+Furthermore, the conducted tests were over six weeks and included tens of thousands
 of customers.
 
-The data that was collected during the testing phase of the implementation
+The data that was collected during the testing phases of the proposed methods
 shows how the changes affect the conversion rate of the e-commerce platform.
 In addition to the conversion rate, the click-through rate was analyzed since 
 it seemed to capture the changes better.
-Furthermore, the results include both measurements and analysis of how the different
+The results include both measurements and analysis of how the different
 parts possibly affected the measurements.
 
 While the results did not indicate that the conversion rate of the e-commerce platform
-was affected by the implementations, the results indicate that with a simple 
+was increased by the proposed methods, the results showed that with a simple 
 solution, the existing process could be replaced.
-In addition, the results indicated the need and direction for future development, which could
+In addition, the results showed the need and direction for future development, which could
 have a further effect on the conversion rate of an e-commerce platform.
 
 
