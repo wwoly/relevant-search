@@ -1,5 +1,7 @@
 # Increasing e-commerce conversion rate with relevant search results using Elasticsearch
 My Master's thesis repository written in LaTeX.
+The thesis is available in the University website
+([see here](https://trepo.tuni.fi/handle/10024/121439)).
 
 
 ## Abstract
